@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -7,674 +8,860 @@
     <!-- Bootstrap 5 + Icons + Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:#f0f2f8; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f8;
+            overflow-x: hidden;
+        }
+
         .login-container {
-            min-height:100vh;
-            background:linear-gradient(135deg,#0f1724 0%,#1a2a3f 100%);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            position:fixed;
-            top:0;
-            left:0;
-            width:100%;
-            z-index:2000;
-            backdrop-filter:blur(4px);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1724 0%, #1a2a3f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
         }
+
         .login-card {
-            background:rgba(255,255,255,0.15);
-            backdrop-filter:blur(12px);
-            border-radius:48px;
-            box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);
-            padding:2.2rem 2.5rem 2.8rem;
-            width:100%;
-            max-width:520px;
-            border:1px solid rgba(255,255,255,0.3);
-            color:white;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            padding: 2rem 1.5rem 2.5rem;
+            width: 100%;
+            max-width: 520px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
         }
-        .login-card .form-control { background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:white; border-radius:60px; padding:0.7rem 1.2rem; }
-        .login-card .form-control:focus { background:rgba(255,255,255,0.3); color:white; border-color:white; box-shadow:none; }
-        .login-card .btn-primary { background:#1f5e8c; border:none; border-radius:60px; padding:0.7rem; font-weight:600; }
-        .toggle-link { color:#ffd966; cursor:pointer; text-decoration:underline; }
-        .admin-navbar { position:sticky; top:0; z-index:1030; background:#fff; box-shadow:0 6px 14px rgba(0,0,0,0.05); border-bottom:3px solid #2b6e9e; padding:0.7rem 1.8rem; }
-        .sidebar { width:280px; background:linear-gradient(145deg,#1a2129 0%,#141b22 100%); box-shadow:4px 0 20px rgba(0,0,0,0.2); transition:width 0.25s; flex-shrink:0; height:calc(100vh - 70px); position:sticky; top:70px; border-right:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; justify-content:space-between; }
-        .sidebar.collapsed { width:0; overflow:hidden; visibility:hidden; }
-        .sidebar .sidebar-header { padding:28px 20px 20px 24px; border-bottom:1px solid rgba(255,255,255,0.08); }
-        .profile-admin { background:rgba(255,255,255,0.06); border-radius:24px; padding:14px 16px; margin:20px 16px; }
-        .profile-admin .avatar { width:48px; height:48px; background:#3b5f8a; border-radius:28px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-        .nav-menu { list-style:none; padding:10px 16px; flex:1; display:flex; flex-direction:column; gap:4px; }
-        .nav-link-custom { display:flex; align-items:center; gap:14px; padding:12px 18px; border-radius:16px; font-weight:500; color:#cfdfed; text-decoration:none; transition:all 0.2s; cursor:pointer; }
-        .nav-link-custom:hover { background:#2d3843; color:white; transform:translateX(4px); }
-        .active-nav { background:#2f3e4b; color:white; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
-        .main-content { background:#f4f7fc; min-height:calc(100vh - 70px); padding:28px 36px; flex:1; }
-        .stat-card { background:white; border-radius:32px; padding:1.4rem 1.2rem; box-shadow:0 10px 25px -5px rgba(0,0,0,0.03); height:100%; border:1px solid rgba(0,0,0,0.02); position:relative; overflow:hidden; }
-        .card-icon { width:54px; height:54px; background:linear-gradient(135deg,#f0f5fe,#e9f0fa); border-radius:28px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:#2c628f; }
-        .card-value { font-size:2.2rem; font-weight:800; color:#1a3c5c; line-height:1.1; }
-        .chart-container { background:white; border-radius:32px; padding:1.4rem; margin-top:28px; }
-        .table-responsive-custom { background:white; border-radius:24px; padding:1rem; margin-top:20px; overflow-x:auto; }
-        @media (max-width:768px) { .main-content { padding:20px; } .sidebar { position:fixed; z-index:1050; transform:translateX(0); } .sidebar.collapsed { transform:translateX(-100%); width:260px; visibility:visible; } }
-        .btn-danger, .btn-primary { transition:0.2s; }
-        .pagination .page-link { color:#1f5e8c; }
-        .search-input { max-width: 320px; margin-bottom: 1rem; }
-        .modal-detail-bg { font-family: 'Inter', sans-serif; }
+
+        .login-card .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            border-radius: 60px;
+            padding: 0.7rem 1.2rem;
+        }
+
+        .login-card .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border-color: white;
+            box-shadow: none;
+        }
+
+        .login-card .btn-primary {
+            background: #1f5e8c;
+            border: none;
+            border-radius: 60px;
+            padding: 0.7rem;
+            font-weight: 600;
+        }
+
+        .toggle-link {
+            color: #ffd966;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Style untuk wrapper password dengan icon mata */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+
+        .password-wrapper .toggle-password:hover {
+            color: white;
+        }
+
+        /* Untuk form register juga */
+        .admin-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            background: #fff;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+            border-bottom: 3px solid #2b6e9e;
+            padding: 0.5rem 1rem;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(145deg, #1a2129 0%, #141b22 100%);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, width 0.2s;
+            flex-shrink: 0;
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar.sidebar-closed {
+                transform: translateX(-100%);
+                width: 0;
+                visibility: hidden;
+                display: none;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                z-index: 1040;
+                transform: translateX(-100%);
+                width: 280px;
+                height: calc(100vh - 70px);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1035;
+                display: none;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        .sidebar .sidebar-header {
+            padding: 28px 20px 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .profile-admin {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 14px 16px;
+            margin: 20px 16px;
+        }
+
+        .profile-admin .avatar {
+            width: 48px;
+            height: 48px;
+            background: #3b5f8a;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 10px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-link-custom {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: 16px;
+            font-weight: 500;
+            color: #cfdfed;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link-custom:hover {
+            background: #2d3843;
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .active-nav {
+            background: #2f3e4b;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            background: #f4f7fc;
+            min-height: calc(100vh - 70px);
+            padding: 1.5rem;
+            flex: 1;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 28px 36px;
+            }
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03);
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f0f5fe, #e9f0fa);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #2c628f;
+        }
+
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a3c5c;
+            line-height: 1.1;
+        }
+
+        @media (min-width: 576px) {
+            .card-value {
+                font-size: 2rem;
+            }
+        }
+
+        .table-responsive-custom {
+            background: white;
+            border-radius: 24px;
+            padding: 0.5rem;
+            margin-top: 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+            min-width: 800px;
+            margin-bottom: 0;
+        }
+
+        .table th,
+        .table td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 576px) {
+            .table-responsive-custom {
+                border-radius: 16px;
+                padding: 0;
+            }
+        }
+
+        .search-input {
+            max-width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 576px) {
+            .search-input {
+                max-width: 320px;
+            }
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 28px;
+            padding: 1rem;
+            margin-top: 28px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                padding: 1.4rem;
+            }
+        }
+
+        .btn-primary,
+        .btn-danger {
+            transition: 0.2s;
+            border-radius: 40px;
+        }
+
+        .pagination .page-link {
+            color: #1f5e8c;
+        }
+
+        .navbar-brand-area h4 {
+            font-size: 1.2rem;
+        }
+
+        @media (min-width: 768px) {
+            .navbar-brand-area h4 {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<!-- LOGIN PANEL -->
-<div id="loginPanel" class="login-container">
-    <div class="login-card">
-        <div class="text-center mb-4">
-            <div class="fs-2 fw-bold" style="background:linear-gradient(135deg,#ffffff,#c7e0ff); -webkit-background-clip:text; background-clip:text; color:transparent;">KILASAN.id</div>
-            <p>Kita Lapor Kekerasan</p>
-            <hr class="w-50 mx-auto" style="background:rgba(255,255,255,0.3);">
-            <h5 id="formTitle">Selamat Datang</h5>
-        </div>
-        <form id="loginForm">
-            <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control" id="loginUsername" placeholder="Masukkan username"></div>
-            <div class="mb-4"><label class="form-label">Password</label><input type="password" class="form-control" id="loginPassword" placeholder="Password"></div>
-            <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
-            <div class="form-switch-area text-center mt-3"><span class="toggle-link" id="showRegisterLink">Create Account</span></div>
-        </form>
-        <form id="registerForm" style="display:none;">
-            <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control" id="regUsername"></div>
-            <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="regEmail"></div>
-            <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="regPassword"></div>
-            <div class="mb-3"><label class="form-label">Pilih Role</label>
-                <select id="regRole" class="form-select" style="background:rgba(255,255,255,0.2); color:white;"><option value="admin">Admin</option><option value="superadmin">Super Admin</option></select>
+    <!-- LOGIN PANEL -->
+    <div id="loginPanel" class="login-container">
+        <div class="login-card">
+            <div class="text-center mb-4">
+                <div class="fs-2 fw-bold"
+                    style="background:linear-gradient(135deg,#ffffff,#c7e0ff); -webkit-background-clip:text; background-clip:text; color:transparent;">
+                    KILASAN.id</div>
+                <p>Kita Lapor Kekerasan</p>
+                <hr class="w-50 mx-auto" style="background:rgba(255,255,255,0.3);">
+                <h5 id="formTitle">Selamat Datang</h5>
             </div>
-            <button type="submit" class="btn btn-primary w-100 py-2">Sign Up</button>
-            <div class="text-center mt-3"><span class="toggle-link" id="showLoginLink">Sudah punya akun? Login</span></div>
-        </form>
-    </div>
-</div>
-
-<!-- DASHBOARD APP -->
-<div id="dashboardApp" style="display:none;">
-    <nav class="admin-navbar d-flex align-items-center justify-content-between flex-wrap">
-        <div class="navbar-brand-area d-flex gap-3 align-items-center">
-            <button id="toggleSidebarBtn" class="btn btn-light rounded-circle" style="width:44px;height:44px;"><i class="fas fa-bars"></i></button>
-            <div><h4 class="fw-bold mb-0">Administrasi</h4><p class="text-muted small">Pengaduan Control panel</p></div>
-        </div>
-        <div class="nav-avatar" id="navAvatarBtn" data-bs-toggle="modal" data-bs-target="#profileModal" style="cursor:pointer; width:48px;height:48px; background:#3b5f8a; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;"><i class="fas fa-user-shield"></i></div>
-    </nav>
-    <div class="d-flex flex-wrap flex-md-nowrap">
-        <aside class="sidebar" id="mainSidebar">
-            <div>
-                <div class="sidebar-header"><div class="logo-main fs-3 fw-bold text-white">KILASAN.id</div><div class="logo-sub text-white-50 small">Pengaduan Control panel</div></div>
-                <div class="profile-admin d-flex align-items-center gap-3" id="sidebarProfile"><div class="avatar" id="sidebarAvatar"><i class="fas fa-user-shield"></i></div><div class="profile-info"><h6 id="sidebarUsername" class="mb-0 text-white">Admin</h6><div class="online-status text-success small"><i class="fas fa-circle"></i> Online</div></div></div>
-            </div>
-            <ul class="nav-menu" id="navMenuList">
-                <li><a data-page="dashboard" class="nav-link-custom active-nav"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a data-page="pengaduan" class="nav-link-custom"><i class="fas fa-clipboard-list"></i> Data Pengaduan</a></li>
-                <li id="menuPetugas" style="display:none;"><a data-page="petugas" class="nav-link-custom"><i class="fas fa-user-shield"></i> Data Petugas</a></li>
-                <li id="menuFeedback" style="display:none;"><a data-page="feedback" class="nav-link-custom"><i class="fas fa-comment-dots"></i> Feedback</a></li>
-                <li><a id="realLogoutBtn" class="nav-link-custom mt-auto" style="margin-top:auto;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </aside>
-        <main class="main-content flex-grow-1" id="mainContent"></main>
-    </div>
-</div>
-
-<!-- MODAL PROFIL -->
-<div class="modal fade" id="profileModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title">Profil Admin</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <div class="text-center mb-3"><img id="modalAvatarPreview" class="rounded-circle" width="100" height="100" style="object-fit:cover; border:3px solid #2b6e9e;"></div>
-                <div class="mb-3"><label>Username</label><input type="text" id="profileUsername" class="form-control"></div>
-                <div class="mb-3"><label>Email</label><input type="email" id="profileEmail" class="form-control"></div>
-                <div class="mb-3"><label>Password Baru (kosongkan jika tidak diubah)</label><input type="password" id="profilePassword" class="form-control"></div>
-            </div>
-            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button><button type="button" id="saveProfileBtn" class="btn btn-primary">Simpan</button></div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL DETAIL PENGADUAN (Pop up dengan Export PDF + Hapus) -->
-<div class="modal fade" id="detailComplaintModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Detail Pengaduan</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="detailModalBody">
-                <!-- konten dinamis -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="modalDeleteComplaintBtn"><i class="fas fa-trash"></i> Hapus Pengaduan</button>
-                <button type="button" class="btn btn-primary" id="modalExportPdfBtn"><i class="fas fa-file-pdf"></i> Export PDF</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // ======================= DATA & STORAGE HELPERS =======================
-    function getComplaints() { return JSON.parse(localStorage.getItem('kilasan_complaints') || '[]'); }
-    function saveComplaints(complaints) { localStorage.setItem('kilasan_complaints', JSON.stringify(complaints)); }
-    function getUsers() { return JSON.parse(localStorage.getItem('kilasan_users') || '[]'); }
-    function saveUsers(users) { localStorage.setItem('kilasan_users', JSON.stringify(users)); }
-    function getFeedbacks() { return JSON.parse(localStorage.getItem('kilasan_feedbacks') || '[]'); }
-    function saveFeedbacks(fb) { localStorage.setItem('kilasan_feedbacks', JSON.stringify(fb)); }
-
-    // Initialize default data
-    function initData() {
-        let users = getUsers();
-        if (users.length === 0) {
-            users = [
-                { username: "superadmin", password: "super123", email: "super@kilasan.id", role: "superadmin", avatar: "", lastLogin: new Date().toISOString() },
-                { username: "admin", password: "admin123", email: "admin@kilasan.id", role: "admin", avatar: "", lastLogin: new Date().toISOString() }
-            ];
-            saveUsers(users);
-        }
-        let complaints = getComplaints();
-        if (complaints.length === 0) {
-            const sample = [
-                { id: "C001", tanggal: "2025-04-10", nama: "Ani", kontak: "08123456789", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan dalam rumah tangga berulang kali", status: "Belum Diproses", jenisPelapor: "diri-sendiri" },
-                { id: "C002", tanggal: "2025-04-12", nama: "Budi", kontak: "0822222222", wilayah: "Jakarta Selatan, Kec. Kebayoran Baru, Kel. Senayan", jenisKelamin: "Pria", usia: "Remaja", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Fisik", kronologi: "Dianiaya di sekolah oleh senior", status: "Sedang Diproses", jenisPelapor: "orang-lain" },
-                { id: "C003", tanggal: "2025-04-15", nama: "Citra", kontak: "08987654321", wilayah: "Jakarta Timur, Kec. Pulo Gadung, Kel. Jati", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Psikis", kronologi: "Intimidasi di tempat kerja", status: "Belum Diproses", jenisPelapor: "diri-sendiri" },
-                { id: "C004", tanggal: "2025-04-16", nama: "Dewi", kontak: "08111222333", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan psikis", status: "Belum Diproses", jenisPelapor: "diri-sendiri" }
-            ];
-            saveComplaints(sample);
-        }
-        let fb = getFeedbacks();
-        if (fb.length === 0) {
-            fb = [{ id:1, name:"User", email:"user@test.com", message:"Terima kasih layanannya sangat membantu", date:new Date().toISOString() }];
-            saveFeedbacks(fb);
-        }
-    }
-    initData();
-
-    let currentUser = null;
-    let currentRole = null;
-    let chartInstances = {};
-
-    // STATE untuk tabel pengaduan (pagination & search)
-    let pengaduanPage = 1;
-    let pengaduanSearch = "";
-    const rowsPerPage = 10;
-
-    // STATE untuk tabel petugas
-    let petugasPage = 1;
-    let petugasSearch = "";
-
-    // Helper PDF (global, reusable)
-    function exportToPDF(elementId, filename) {
-        const originalElement = document.getElementById(elementId);
-        if (!originalElement) {
-            alert("Data tidak ditemukan untuk diekspor.");
-            return;
-        }
-        const cloneContainer = originalElement.cloneNode(true);
-        cloneContainer.querySelectorAll('select, button, .status-select, .detail-btn, .btn, .pagination, input').forEach(el => el.remove());
-        const tempDiv = document.createElement('div');
-        tempDiv.style.padding = '20px';
-        tempDiv.style.background = 'white';
-        tempDiv.style.fontFamily = 'Inter, sans-serif';
-        tempDiv.style.width = '100%';
-        tempDiv.style.overflowX = 'auto';
-        tempDiv.appendChild(cloneContainer);
-        document.body.appendChild(tempDiv);
-        const opt = {
-            margin: [0.5, 0.5, 0.5, 0.5],
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true, useCORS: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-        };
-        html2pdf().set(opt).from(tempDiv).save().then(() => {
-            document.body.removeChild(tempDiv);
-        }).catch(err => {
-            console.error(err);
-            alert("Gagal mengekspor PDF.");
-            document.body.removeChild(tempDiv);
-        });
-    }
-
-    // Export single complaint via temporary div
-    function exportSingleComplaintPDF(complaint) {
-        const detailDiv = document.createElement('div');
-        detailDiv.style.padding = '20px';
-        detailDiv.style.fontFamily = 'Inter, sans-serif';
-        detailDiv.style.background = 'white';
-        detailDiv.innerHTML = `
-            <h3 style="color:#1f5e8c;">Detail Pengaduan KILASAN.id</h3>
-            <hr>
-            <table style="width:100%; border-collapse:collapse;">
-                <tr><td style="padding:8px; font-weight:bold;">No</td><td style="padding:8px;">${complaint.id}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Tanggal</td><td style="padding:8px;">${complaint.tanggal}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Nama Pelapor</td><td style="padding:8px;">${complaint.nama || 'Anonim'}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Kontak</td><td style="padding:8px;">${complaint.kontak}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Wilayah</td><td style="padding:8px;">${complaint.wilayah}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Jenis Kelamin</td><td style="padding:8px;">${complaint.jenisKelamin}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Usia</td><td style="padding:8px;">${complaint.usia}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Tingkat Kekhawatiran</td><td style="padding:8px;">${complaint.tingkatKhawatir}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Kategori</td><td style="padding:8px;">${complaint.kategori}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Kronologi</td><td style="padding:8px;">${complaint.kronologi}</td></tr>
-                <tr><td style="padding:8px; font-weight:bold;">Status</td><td style="padding:8px;">${complaint.status}</td></tr>
-            </table>
-            <p style="margin-top:20px;">Dokumen dihasilkan dari sistem KILASAN.id</p>
-        `;
-        document.body.appendChild(detailDiv);
-        const opt = { margin: 0.5, filename: `Pengaduan_${complaint.id}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
-        html2pdf().set(opt).from(detailDiv).save().then(() => detailDiv.remove()).catch(() => detailDiv.remove());
-    }
-
-    // Fungsi ekstrak kelurahan dari string wilayah (misal: ... Kel. Meruya Utara)
-    function extractKelurahan(wilayahStr) {
-        if (!wilayahStr) return "Tidak diketahui";
-        const match = wilayahStr.match(/Kel\.\s*([^,]+)/i);
-        if (match) return match[1].trim();
-        // fallback: ambil bagian setelah koma terakhir
-        const parts = wilayahStr.split(',');
-        return parts[parts.length-1].trim();
-    }
-
-    // render functions
-    function renderPage(pageName) {
-        const main = document.getElementById('mainContent');
-        if (pageName === 'dashboard') renderDashboard(main);
-        else if (pageName === 'pengaduan') renderPengaduan(main);
-        else if (pageName === 'petugas' && currentRole === 'superadmin') renderPetugas(main);
-        else if (pageName === 'feedback' && currentRole === 'superadmin') renderFeedback(main);
-        else renderDashboard(main);
-    }
-
-    function renderDashboard(container) {
-        const complaints = getComplaints();
-        const belum = complaints.filter(c => c.status === 'Belum Diproses').length;
-        const proses = complaints.filter(c => c.status === 'Sedang Diproses').length;
-        const selesai = complaints.filter(c => c.status === 'Selesai').length;
-        const ditolak = complaints.filter(c => c.status === 'Ditolak').length;
-        const diri = complaints.filter(c => c.jenisPelapor === 'diri-sendiri').length;
-        const orang = complaints.filter(c => c.jenisPelapor === 'orang-lain').length;
-        const sedikit = complaints.filter(c => c.tingkatKhawatir === 'Sedikit Khawatir').length;
-        const khawatir = complaints.filter(c => c.tingkatKhawatir === 'Khawatir').length;
-        const sangat = complaints.filter(c => c.tingkatKhawatir === 'Sangat Khawatir').length;
-
-        // Hitung per kelurahan
-        const kelurahanCount = {};
-        complaints.forEach(c => {
-            const kel = extractKelurahan(c.wilayah);
-            kelurahanCount[kel] = (kelurahanCount[kel] || 0) + 1;
-        });
-        const kelurahanLabels = Object.keys(kelurahanCount);
-        const kelurahanData = Object.values(kelurahanCount);
-
-        container.innerHTML = `
-            <div class="mb-4"><h5><i class="fas fa-chart-line"></i> Status Laporan</h5></div>
-            <div class="row g-4">
-                <div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-hourglass-half"></i></div><div class="mt-3"><div class="card-title">BELUM DIPROSES</div><div class="card-value">${belum}</div></div></div></div></div>
-                <div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-spinner"></i></div><div class="mt-3"><div class="card-title">SEDANG DIPROSES</div><div class="card-value">${proses}</div></div></div></div></div>
-                <div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-check-circle"></i></div><div class="mt-3"><div class="card-title">SELESAI</div><div class="card-value">${selesai}</div></div></div></div></div>
-                <div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-ban"></i></div><div class="mt-3"><div class="card-title">DITOLAK</div><div class="card-value">${ditolak}</div></div></div></div></div>
-            </div>
-            <div class="row mt-4"><div class="col-md-6"><div class="stat-card"><div class="d-flex align-items-center gap-3"><div class="card-icon"><i class="fas fa-user"></i></div><div><div class="card-title">DIRI SENDIRI</div><div class="card-value">${diri}</div></div></div></div></div>
-            <div class="col-md-6"><div class="stat-card"><div class="d-flex align-items-center gap-3"><div class="card-icon"><i class="fas fa-users"></i></div><div><div class="card-title">ORANG LAIN</div><div class="card-value">${orang}</div></div></div></div></div></div>
-            <div class="chart-container mt-4"><h6>📊 Tingkat Kekhawatiran Masyarakat</h6><canvas id="khChart" height="150"></canvas></div>
-            <div class="chart-container mt-4"><h6>🗺️ Jumlah Kekerasan per Kelurahan</h6><canvas id="wilayahChart" height="150"></canvas></div>
-        `;
-        setTimeout(() => {
-            const ctx1 = document.getElementById('khChart')?.getContext('2d');
-            if (ctx1) { if (chartInstances.kh) chartInstances.kh.destroy(); chartInstances.kh = new Chart(ctx1, { type:'bar', data:{ labels:['Sedikit Khawatir','Khawatir','Sangat Khawatir'], datasets:[{ label:'Jumlah', data:[sedikit,khawatir,sangat], backgroundColor:['#51b0ae','#f4b942','#dd6c4a'] }] } }); }
-            const ctx2 = document.getElementById('wilayahChart')?.getContext('2d');
-            if (ctx2) { if (chartInstances.wilayah) chartInstances.wilayah.destroy(); chartInstances.wilayah = new Chart(ctx2, { type:'bar', data:{ labels:kelurahanLabels, datasets:[{ label:'Jumlah Laporan', data:kelurahanData, backgroundColor:'#2c628f' }] } }); }
-        }, 100);
-    }
-
-    // ========== PENGADUAN (dengan search, pagination, border, No, hapus modal) ==========
-    function renderPengaduan(container) {
-        container.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                <h5><i class="fas fa-table"></i> Seluruh Pengaduan</h5>
-                <div class="search-input"><input type="text" id="searchPengaduanInput" class="form-control" placeholder="🔍 Cari nama, kontak, wilayah..." style="border-radius:30px;"></div>
-            </div>
-            <div class="table-responsive-custom" id="tabelContainerPengaduan">
-                <table class="table table-bordered align-middle" id="tabelPengaduan">
-                    <thead class="table-light">
-                        <tr><th>No</th><th>Tgl</th><th>Pelapor</th><th>Kontak</th><th>Wilayah</th><th>JK</th><th>Usia</th><th>Kekhawatiran</th><th>Kategori</th><th>Kronologi</th><th>Status</th><th>Aksi</th></tr>
-                    </thead>
-                    <tbody id="tbodyPengaduan"></tbody>
-                </table>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
-                <div id="pengaduanInfo" class="text-muted small"></div>
-                <nav><ul class="pagination pagination-sm" id="pengaduanPagination"></ul></nav>
-            </div>
-        `;
-        const searchInput = document.getElementById('searchPengaduanInput');
-        searchInput.value = pengaduanSearch;
-        searchInput.addEventListener('input', (e) => { pengaduanSearch = e.target.value; pengaduanPage = 1; renderPengaduanTable(); });
-        renderPengaduanTable();
-    }
-
-    function renderPengaduanTable() {
-        const complaints = getComplaints();
-        const filtered = complaints.filter(c => 
-            c.nama?.toLowerCase().includes(pengaduanSearch.toLowerCase()) ||
-            c.kontak?.includes(pengaduanSearch) ||
-            c.wilayah?.toLowerCase().includes(pengaduanSearch.toLowerCase()) ||
-            c.kronologi?.toLowerCase().includes(pengaduanSearch.toLowerCase())
-        );
-        const total = filtered.length;
-        const totalPages = Math.ceil(total / rowsPerPage);
-        if (pengaduanPage > totalPages) pengaduanPage = totalPages || 1;
-        const start = (pengaduanPage-1)*rowsPerPage;
-        const pageData = filtered.slice(start, start+rowsPerPage);
-        const tbody = document.getElementById('tbodyPengaduan');
-        if (!tbody) return;
-        tbody.innerHTML = pageData.map((c, idx) => {
-            const rowNumber = start + idx + 1;
-            return `<tr>
-                <td>${rowNumber}</td>
-                <td>${c.tanggal}</td><td>${c.nama || 'Anonim'}</td><td>${c.kontak}</td><td>${c.wilayah}</td>
-                <td>${c.jenisKelamin}</td><td>${c.usia}</td><td>${c.tingkatKhawatir}</td><td>${c.kategori || '-'}</td>
-                <td>${c.kronologi.substring(0,40)}...</td>
-                <td><select class="form-select form-select-sm status-select" data-id="${c.id}">
-                    <option ${c.status === 'Belum Diproses' ? 'selected' : ''}>Belum Diproses</option>
-                    <option ${c.status === 'Sedang Diproses' ? 'selected' : ''}>Sedang Diproses</option>
-                    <option ${c.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
-                    <option ${c.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
-                </select></td>
-                <td><button class="btn btn-sm btn-outline-primary detail-btn" data-id="${c.id}">Detail</button></td>
-            </tr>`;
-        }).join('');
-        document.querySelectorAll('.status-select').forEach(sel => {
-            sel.removeEventListener('change', handleStatusChange);
-            sel.addEventListener('change', handleStatusChange);
-        });
-        document.querySelectorAll('.detail-btn').forEach(btn => {
-            btn.removeEventListener('click', handleDetailClick);
-            btn.addEventListener('click', handleDetailClick);
-        });
-        const startNum = total === 0 ? 0 : start+1;
-        const endNum = Math.min(start+rowsPerPage, total);
-        document.getElementById('pengaduanInfo').innerText = `Menampilkan ${startNum} - ${endNum} dari ${total} data`;
-        const paginationUl = document.getElementById('pengaduanPagination');
-        if(paginationUl){
-            paginationUl.innerHTML = '';
-            if(totalPages>1){
-                paginationUl.innerHTML += `<li class="page-item ${pengaduanPage===1?'disabled':''}"><a class="page-link" href="#" data-page="prev">«</a></li>`;
-                for(let i=1;i<=totalPages;i++){
-                    if(i===1 || i===totalPages || (i>=pengaduanPage-2 && i<=pengaduanPage+2)){
-                        paginationUl.innerHTML += `<li class="page-item ${i===pengaduanPage?'active':''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
-                    } else if(i===pengaduanPage-3 || i===pengaduanPage+3) paginationUl.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-                }
-                paginationUl.innerHTML += `<li class="page-item ${pengaduanPage===totalPages?'disabled':''}"><a class="page-link" href="#" data-page="next">»</a></li>`;
-                paginationUl.querySelectorAll('.page-link').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        let target = link.dataset.page;
-                        if(target === 'prev') { if(pengaduanPage>1) pengaduanPage--; }
-                        else if(target === 'next') { if(pengaduanPage<totalPages) pengaduanPage++; }
-                        else pengaduanPage = parseInt(target);
-                        renderPengaduanTable();
-                    });
-                });
-            }
-        }
-    }
-
-    function handleStatusChange(e) {
-        const id = e.target.dataset.id;
-        const newStatus = e.target.value;
-        let all = getComplaints();
-        const idx = all.findIndex(x => x.id === id);
-        if(idx !== -1){
-            all[idx].status = newStatus;
-            saveComplaints(all);
-            renderPengaduanTable();
-        }
-    }
-
-    let currentDetailComplaint = null;
-    function handleDetailClick(e) {
-        const id = e.target.dataset.id;
-        const comp = getComplaints().find(c => c.id === id);
-        if(comp){
-            currentDetailComplaint = comp;
-            const modalBody = document.getElementById('detailModalBody');
-            modalBody.innerHTML = `
-                <div class="row">
-                    <div class="col-6"><strong>ID:</strong> ${comp.id}</div>
-                    <div class="col-6"><strong>Tanggal:</strong> ${comp.tanggal}</div>
-                    <div class="col-12 mt-2"><strong>Nama Pelapor:</strong> ${comp.nama || 'Anonim'}</div>
-                    <div class="col-6"><strong>Kontak:</strong> ${comp.kontak}</div>
-                    <div class="col-6"><strong>Wilayah:</strong> ${comp.wilayah}</div>
-                    <div class="col-6"><strong>Jenis Kelamin:</strong> ${comp.jenisKelamin}</div>
-                    <div class="col-6"><strong>Usia:</strong> ${comp.usia}</div>
-                    <div class="col-6"><strong>Tingkat Kekhawatiran:</strong> ${comp.tingkatKhawatir}</div>
-                    <div class="col-6"><strong>Kategori:</strong> ${comp.kategori}</div>
-                    <div class="col-12 mt-2"><strong>Kronologi:</strong> ${comp.kronologi}</div>
-                    <div class="col-12 mt-2"><strong>Status:</strong> <span class="badge bg-secondary">${comp.status}</span></div>
+            <form id="loginForm">
+                <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control"
+                        id="loginUsername" placeholder="Masukkan username"></div>
+                <div class="mb-4">
+                    <label class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                        <i class="fas fa-eye toggle-password" data-target="loginPassword"></i>
+                    </div>
                 </div>
-            `;
-            const modal = new bootstrap.Modal(document.getElementById('detailComplaintModal'));
-            modal.show();
-        }
-    }
+                <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
+                <div class="form-switch-area text-center mt-3"><span class="toggle-link" id="showRegisterLink">Create
+                        Account</span></div>
+            </form>
+            <form id="registerForm" style="display:none;">
+                <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control"
+                        id="regUsername"></div>
+                <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"
+                        id="regEmail"></div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-control" id="regPassword">
+                        <i class="fas fa-eye toggle-password" data-target="regPassword"></i>
+                    </div>
+                </div>
+                <div class="mb-3"><label class="form-label">Pilih Role</label>
+                    <select id="regRole" class="form-select" style="background:rgba(255,255,255,0.2); color:white;">
+                        <option value="admin">Admin</option>
+                        <option value="superadmin">Super Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">Sign Up</button>
+                <div class="text-center mt-3"><span class="toggle-link" id="showLoginLink">Sudah punya akun?
+                        Login</span></div>
+            </form>
+        </div>
+    </div>
 
-    document.getElementById('modalDeleteComplaintBtn')?.addEventListener('click', () => {
-        if(currentDetailComplaint && confirm('Yakin hapus pengaduan ini?')){
-            let all = getComplaints();
-            const filtered = all.filter(c => c.id !== currentDetailComplaint.id);
-            saveComplaints(filtered);
-            bootstrap.Modal.getInstance(document.getElementById('detailComplaintModal')).hide();
-            if(document.getElementById('tbodyPengaduan')) renderPengaduanTable();
-            else renderPage('pengaduan');
-        }
-    });
-    document.getElementById('modalExportPdfBtn')?.addEventListener('click', () => {
-        if(currentDetailComplaint) exportSingleComplaintPDF(currentDetailComplaint);
-    });
-
-    // ========== PETUGAS dengan border, pagination, search, No ==========
-    function renderPetugas(container) {
-        container.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                <h5><i class="fas fa-users"></i> Manajemen Petugas Admin</h5>
-                <div class="search-input"><input type="text" id="searchPetugasInput" class="form-control" placeholder="🔍 Cari username / email"></div>
+    <!-- DASHBOARD APP -->
+    <div id="dashboardApp" style="display:none;">
+        <nav class="admin-navbar d-flex align-items-center justify-content-between flex-wrap">
+            <div class="navbar-brand-area d-flex gap-3 align-items-center">
+                <button id="toggleSidebarBtn" class="btn btn-light rounded-circle" style="width:44px;height:44px;"><i
+                        class="fas fa-bars"></i></button>
+                <div>
+                    <h4 class="fw-bold mb-0">Administrasi</h4>
+                    <p class="text-muted small mb-0">Pengaduan Control panel</p>
+                </div>
             </div>
-            <div class="table-responsive-custom">
-                <table class="table table-bordered align-middle">
-                    <thead class="table-light"><tr><th>No</th><th>Username</th><th>Email</th><th>Status Online</th><th>Terakhir Login</th><th>Aksi</th></tr></thead>
-                    <tbody id="petugasBody"></tbody>
-                </table>
+            <div class="nav-avatar" id="navAvatarBtn" data-bs-toggle="modal" data-bs-target="#profileModal"
+                style="cursor:pointer; width:48px;height:48px; background:#3b5f8a; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">
+                <i class="fas fa-user-shield"></i>
             </div>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div id="petugasInfo" class="text-muted small"></div>
-                <nav><ul class="pagination pagination-sm" id="petugasPagination"></ul></nav>
+        </nav>
+        <div class="d-flex flex-wrap flex-md-nowrap position-relative">
+            <div id="sidebarOverlay" class="sidebar-overlay"></div>
+            <aside class="sidebar" id="mainSidebar">
+                <div>
+                    <div class="sidebar-header">
+                        <div class="logo-main fs-3 fw-bold text-white">KILASAN.id</div>
+                        <div class="logo-sub text-white-50 small">Pengaduan Control panel</div>
+                    </div>
+                    <div class="profile-admin d-flex align-items-center gap-3" id="sidebarProfile">
+                        <div class="avatar" id="sidebarAvatar"><i class="fas fa-user-shield"></i></div>
+                        <div class="profile-info">
+                            <h6 id="sidebarUsername" class="mb-0 text-white">Admin</h6>
+                            <div class="online-status text-success small"><i class="fas fa-circle"></i> Online</div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav-menu" id="navMenuList">
+                    <li><a data-page="dashboard" class="nav-link-custom active-nav"><i
+                                class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a data-page="pengaduan" class="nav-link-custom"><i class="fas fa-clipboard-list"></i> Data
+                            Pengaduan</a></li>
+                    <li id="menuPetugas" style="display:none;"><a data-page="petugas" class="nav-link-custom"><i
+                                class="fas fa-user-shield"></i> Data Petugas</a></li>
+                    <li id="menuFeedback" style="display:none;"><a data-page="feedback" class="nav-link-custom"><i
+                                class="fas fa-comment-dots"></i> Feedback</a></li>
+                    <li><a id="realLogoutBtn" class="nav-link-custom mt-auto" style="margin-top:auto;"><i
+                                class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </aside>
+            <main class="main-content flex-grow-1" id="mainContent"></main>
+        </div>
+    </div>
+
+    <!-- MODAL PROFIL -->
+    <div class="modal fade" id="profileModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Profil Admin</h5><button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3"><img id="modalAvatarPreview" class="rounded-circle" width="100"
+                            height="100" style="object-fit:cover; border:3px solid #2b6e9e;"></div>
+                    <div class="mb-3"><label>Username</label><input type="text" id="profileUsername"
+                            class="form-control"></div>
+                    <div class="mb-3"><label>Email</label><input type="email" id="profileEmail" class="form-control">
+                    </div>
+                    <div class="mb-3"><label>Password Baru (kosongkan jika tidak diubah)</label><input type="password"
+                            id="profilePassword" class="form-control"></div>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Batal</button><button type="button" id="saveProfileBtn"
+                        class="btn btn-primary">Simpan</button></div>
             </div>
-            <button class="btn btn-primary mt-3" id="tambahPetugasBtn"><i class="fas fa-plus"></i> Tambah Petugas</button>
-        `;
-        const searchInput = document.getElementById('searchPetugasInput');
-        if(searchInput) {
-            searchInput.value = petugasSearch;
-            searchInput.addEventListener('input', (e) => { petugasSearch = e.target.value; petugasPage = 1; renderPetugasTable(); });
-        }
-        renderPetugasTable();
-        document.getElementById('tambahPetugasBtn')?.addEventListener('click', () => {
-            let newUser = prompt("Masukkan username petugas baru:");
-            if (!newUser) return;
-            let newPass = prompt("Password:");
-            let newEmail = prompt("Email:");
-            let userList = getUsers();
-            if (userList.find(u => u.username === newUser)) { alert("Username sudah ada!"); return; }
-            userList.push({ username: newUser, password: newPass, email: newEmail, role: "admin", avatar: "", lastLogin: null });
-            saveUsers(userList);
-            renderPetugasTable();
-        });
-    }
+        </div>
+    </div>
 
-    function renderPetugasTable() {
-        const users = getUsers().filter(u => u.role === 'admin');
-        const filtered = users.filter(u => u.username.toLowerCase().includes(petugasSearch.toLowerCase()) || u.email.toLowerCase().includes(petugasSearch.toLowerCase()));
-        const total = filtered.length;
-        const totalPages = Math.ceil(total / rowsPerPage);
-        if(petugasPage > totalPages) petugasPage = totalPages || 1;
-        const start = (petugasPage-1)*rowsPerPage;
-        const pageData = filtered.slice(start, start+rowsPerPage);
-        const tbody = document.getElementById('petugasBody');
-        if(!tbody) return;
-        const now = new Date();
-        tbody.innerHTML = pageData.map((u, idx) => {
-            const rowNum = start+idx+1;
-            let last = u.lastLogin ? new Date(u.lastLogin) : null;
-            let online = last && (now - last) < 5*60*1000;
-            return `<tr>
-                <td>${rowNum}</td><td>${u.username}</td><td>${u.email}</td>
-                <td><span class="badge ${online ? 'bg-success' : 'bg-secondary'}">${online ? 'Online' : 'Offline'}</span></td>
-                <td>${u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
-                <td><button class="btn btn-sm btn-danger hapusPetugas" data-user="${u.username}">Hapus</button></td>
-            </tr>`;
-        }).join('');
-        document.querySelectorAll('.hapusPetugas').forEach(btn => {
-            btn.removeEventListener('click', handleHapusPetugas);
-            btn.addEventListener('click', handleHapusPetugas);
-        });
-        const startNum = total===0?0:start+1, endNum = Math.min(start+rowsPerPage,total);
-        document.getElementById('petugasInfo').innerText = `Menampilkan ${startNum} - ${endNum} dari ${total} data`;
-        const paginationUl = document.getElementById('petugasPagination');
-        if(paginationUl){
-            paginationUl.innerHTML = '';
-            if(totalPages>1){
-                paginationUl.innerHTML += `<li class="page-item ${petugasPage===1?'disabled':''}"><a class="page-link" href="#" data-page="prev-p">«</a></li>`;
-                for(let i=1;i<=totalPages;i++){
-                    if(i===1||i===totalPages||(i>=petugasPage-2&&i<=petugasPage+2))
-                        paginationUl.innerHTML += `<li class="page-item ${i===petugasPage?'active':''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
-                    else if(i===petugasPage-3||i===petugasPage+3) paginationUl.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-                }
-                paginationUl.innerHTML += `<li class="page-item ${petugasPage===totalPages?'disabled':''}"><a class="page-link" href="#" data-page="next-p">»</a></li>`;
-                paginationUl.querySelectorAll('.page-link').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        let target = link.dataset.page;
-                        if(target === 'prev-p') { if(petugasPage>1) petugasPage--; }
-                        else if(target === 'next-p') { if(petugasPage<totalPages) petugasPage++; }
-                        else petugasPage = parseInt(target);
-                        renderPetugasTable();
-                    });
-                });
-            }
-        }
-    }
+    <!-- MODAL DETAIL PENGADUAN -->
+    <div class="modal fade" id="detailComplaintModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Detail Pengaduan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detailModalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="modalDeleteComplaintBtn"><i
+                            class="fas fa-trash"></i> Hapus Pengaduan</button>
+                    <button type="button" class="btn btn-primary" id="modalExportPdfBtn"><i class="fas fa-file-pdf"></i>
+                        Export PDF</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    function handleHapusPetugas(e) {
-        const username = e.target.dataset.user;
-        if(confirm(`Hapus petugas ${username}?`)){
-            let usersAll = getUsers();
-            let filtered = usersAll.filter(u => u.username !== username);
-            saveUsers(filtered);
-            renderPetugasTable();
-        }
-    }
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ======================= DATA & STORAGE HELPERS =======================
+        function getComplaints() { return JSON.parse(localStorage.getItem('kilasan_complaints') || '[]'); }
+        function saveComplaints(complaints) { localStorage.setItem('kilasan_complaints', JSON.stringify(complaints)); }
+        function getUsers() { return JSON.parse(localStorage.getItem('kilasan_users') || '[]'); }
+        function saveUsers(users) { localStorage.setItem('kilasan_users', JSON.stringify(users)); }
+        function getFeedbacks() { return JSON.parse(localStorage.getItem('kilasan_feedbacks') || '[]'); }
+        function saveFeedbacks(fb) { localStorage.setItem('kilasan_feedbacks', JSON.stringify(fb)); }
 
-    function renderFeedback(container) {
-        let feedbacks = getFeedbacks();
-        container.innerHTML = `<h5><i class="fas fa-comment-dots"></i> Feedback Pengguna</h5>
-            <div class="table-responsive-custom"><table class="table table-bordered"><thead><tr><th>Nama</th><th>Email</th><th>Pesan</th><th>Tanggal</th></tr></thead>
-            <tbody>${feedbacks.map(f => `<tr><td>${f.name}</td><td>${f.email}</td><td>${f.message}</td><td>${new Date(f.date).toLocaleString()}</td></tr>`).join('')}</tbody></table></div>`;
-    }
-
-    function updateMenuByRole() {
-        const isSuper = currentRole === 'superadmin';
-        const menuPetugas = document.getElementById('menuPetugas');
-        const menuFeedback = document.getElementById('menuFeedback');
-        if (menuPetugas) menuPetugas.style.display = isSuper ? 'block' : 'none';
-        if (menuFeedback) menuFeedback.style.display = isSuper ? 'block' : 'none';
-        document.querySelectorAll('#navMenuList .nav-link-custom').forEach(link => {
-            link.removeEventListener('click', handleMenuClick);
-            link.addEventListener('click', handleMenuClick);
-        });
-        const active = document.querySelector('#navMenuList .nav-link-custom[data-page="dashboard"]');
-        if (active) active.classList.add('active-nav');
-        renderPage('dashboard');
-    }
-
-    function handleMenuClick(e) {
-        e.preventDefault();
-        const page = this.dataset.page;
-        if (page) renderPage(page);
-        document.querySelectorAll('#navMenuList .nav-link-custom').forEach(l => l.classList.remove('active-nav'));
-        this.classList.add('active-nav');
-    }
-
-    function handleLogin(e) {
-        e.preventDefault();
-        const username = document.getElementById('loginUsername').value.trim();
-        const pwd = document.getElementById('loginPassword').value.trim();
-        const users = getUsers();
-        const user = users.find(u => u.username === username && u.password === pwd);
-        if (user) {
-            currentUser = user;
-            currentRole = user.role;
-            user.lastLogin = new Date().toISOString();
-            saveUsers(users);
-            document.getElementById('loginPanel').style.display = 'none';
-            document.getElementById('dashboardApp').style.display = 'block';
-            document.getElementById('sidebarUsername').innerText = user.username;
-            updateMenuByRole();
-        } else alert('Username atau password salah!');
-    }
-    function handleRegister(e) {
-        e.preventDefault();
-        const username = document.getElementById('regUsername').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const password = document.getElementById('regPassword').value.trim();
-        const role = document.getElementById('regRole').value;
-        if (!username || !email || !password) { alert("Lengkapi semua data"); return; }
-        let users = getUsers();
-        if (users.find(u => u.username === username)) { alert("Username sudah ada"); return; }
-        users.push({ username, password, email, role, avatar: "", lastLogin: null });
-        saveUsers(users);
-        alert("Registrasi berhasil, silakan login.");
-        toggleToLogin();
-    }
-    function logout() { currentUser=null; document.getElementById('loginPanel').style.display='flex'; document.getElementById('dashboardApp').style.display='none'; }
-    function toggleToRegister() { document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block'; document.getElementById('formTitle').innerText='Buat Akun'; }
-    function toggleToLogin() { document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none'; document.getElementById('formTitle').innerText='Selamat Datang'; }
-
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
-    document.getElementById('registerForm').addEventListener('submit', handleRegister);
-    document.getElementById('showRegisterLink').addEventListener('click', toggleToRegister);
-    document.getElementById('showLoginLink').addEventListener('click', toggleToLogin);
-    document.getElementById('realLogoutBtn').addEventListener('click', (e) => { e.preventDefault(); logout(); });
-    document.getElementById('toggleSidebarBtn').addEventListener('click', () => document.getElementById('mainSidebar').classList.toggle('collapsed'));
-    document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
-        let newUsername = document.getElementById('profileUsername').value;
-        let newEmail = document.getElementById('profileEmail').value;
-        let newPass = document.getElementById('profilePassword').value;
-        let users = getUsers();
-        let idx = users.findIndex(u => u.username === currentUser.username);
-        if (idx !== -1) {
-            if (newUsername !== currentUser.username && users.find(u => u.username === newUsername)) alert("Username sudah dipakai");
-            else {
-                users[idx].username = newUsername;
-                users[idx].email = newEmail;
-                if (newPass) users[idx].password = newPass;
+        // INIT DATA DENGAN SAMPLE YANG SUDAH MENYERTAKAN RT/RW
+        function initData() {
+            let users = getUsers();
+            if (users.length === 0) {
+                users = [
+                    { username: "superadmin", password: "super123", email: "super@kilasan.id", role: "superadmin", avatar: "", lastLogin: new Date().toISOString() },
+                    { username: "admin", password: "admin123", email: "admin@kilasan.id", role: "admin", avatar: "", lastLogin: new Date().toISOString() }
+                ];
                 saveUsers(users);
-                currentUser = users[idx];
-                document.getElementById('sidebarUsername').innerText = currentUser.username;
-                alert("Profil diperbarui");
+            }
+            let complaints = getComplaints();
+            if (complaints.length === 0) {
+                const sample = [
+                    { id: "C001", tanggal: "2025-04-10", nama: "Ani", kontak: "08123456789", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara, RT 03, RW 08", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan dalam rumah tangga berulang kali", status: "Belum Diproses", jenisPelapor: "diri-sendiri" },
+                    { id: "C002", tanggal: "2025-04-12", nama: "Budi", kontak: "0822222222", wilayah: "Jakarta Selatan, Kec. Kebayoran Baru, Kel. Senayan, RT 07, RW 12", jenisKelamin: "Pria", usia: "Remaja", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Fisik", kronologi: "Dianiaya di sekolah oleh senior", status: "Sedang Diproses", jenisPelapor: "orang-lain" },
+                    { id: "C003", tanggal: "2025-04-15", nama: "Citra", kontak: "08987654321", wilayah: "Jakarta Timur, Kec. Pulo Gadung, Kel. Jati, RT 02, RW 05", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Psikis", kronologi: "Intimidasi di tempat kerja", status: "Belum Diproses", jenisPelapor: "diri-sendiri" },
+                    { id: "C004", tanggal: "2025-04-16", nama: "Dewi", kontak: "08111222333", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara, RT 04, RW 08", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan psikis", status: "Belum Diproses", jenisPelapor: "diri-sendiri" }
+                ];
+                saveComplaints(sample);
+            }
+            let fb = getFeedbacks();
+            if (fb.length === 0) {
+                fb = [{ id: 1, name: "User", email: "user@test.com", message: "Terima kasih layanannya sangat membantu", date: new Date().toISOString() }];
+                saveFeedbacks(fb);
             }
         }
-        bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-    });
-    document.getElementById('navAvatarBtn')?.addEventListener('click', () => {
-        document.getElementById('profileUsername').value = currentUser.username;
-        document.getElementById('profileEmail').value = currentUser.email || '';
-        document.getElementById('profilePassword').value = '';
-    });
-</script>
+        initData();
+
+        let currentUser = null;
+        let currentRole = null;
+        let chartInstances = {};
+
+        let pengaduanPage = 1;
+        let pengaduanSearch = "";
+        let pengaduanStatusFilter = "";
+        const rowsPerPage = 10;
+
+        let petugasPage = 1;
+        let petugasSearch = "";
+
+        function exportToPDF(elementId, filename) {
+            const originalElement = document.getElementById(elementId);
+            if (!originalElement) { alert("Data tidak ditemukan untuk diekspor."); return; }
+            const cloneContainer = originalElement.cloneNode(true);
+            cloneContainer.querySelectorAll('select, button, .status-select, .detail-btn, .btn, .pagination, input').forEach(el => el.remove());
+            const tempDiv = document.createElement('div');
+            tempDiv.style.padding = '20px';
+            tempDiv.style.background = 'white';
+            tempDiv.style.fontFamily = 'Inter, sans-serif';
+            tempDiv.style.width = '100%';
+            tempDiv.style.overflowX = 'auto';
+            tempDiv.appendChild(cloneContainer);
+            document.body.appendChild(tempDiv);
+            const opt = { margin: [0.5, 0.5, 0.5, 0.5], filename: filename, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, letterRendering: true, useCORS: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' } };
+            html2pdf().set(opt).from(tempDiv).save().then(() => { document.body.removeChild(tempDiv); }).catch(err => { console.error(err); alert("Gagal mengekspor PDF."); document.body.removeChild(tempDiv); });
+        }
+
+        function exportSingleComplaintPDF(complaint) {
+            const detailDiv = document.createElement('div');
+            detailDiv.style.padding = '20px';
+            detailDiv.style.fontFamily = 'Inter, sans-serif';
+            detailDiv.style.background = 'white';
+            detailDiv.innerHTML = `<h3 style="color:#1f5e8c;">Detail Pengaduan KILASAN.id</h3><hr><table style="width:100%; border-collapse:collapse;"><tr><td style="padding:8px; font-weight:bold;">No</td><td style="padding:8px;">${complaint.id}</td></tr><tr><td style="padding:8px; font-weight:bold;">Tanggal</td><td style="padding:8px;">${complaint.tanggal}</td></tr><tr><td style="padding:8px; font-weight:bold;">Nama Pelapor</td><td style="padding:8px;">${complaint.nama || 'Anonim'}</td></tr><tr><td style="padding:8px; font-weight:bold;">Kontak</td><td style="padding:8px;">${complaint.kontak}</td></tr><tr><td style="padding:8px; font-weight:bold;">Wilayah</td><td style="padding:8px;">${complaint.wilayah}</td></tr><tr><td style="padding:8px; font-weight:bold;">Jenis Kelamin</td><td style="padding:8px;">${complaint.jenisKelamin}</td></tr><tr><td style="padding:8px; font-weight:bold;">Usia</td><td style="padding:8px;">${complaint.usia}</td></tr><tr><td style="padding:8px; font-weight:bold;">Tingkat Kekhawatiran</td><td style="padding:8px;">${complaint.tingkatKhawatir}</td></tr><tr><td style="padding:8px; font-weight:bold;">Kategori</td><td style="padding:8px;">${complaint.kategori}</td></tr><tr><td style="padding:8px; font-weight:bold;">Kronologi</td><td style="padding:8px;">${complaint.kronologi}</td></tr><tr><td style="padding:8px; font-weight:bold;">Status</td><td style="padding:8px;">${complaint.status}</td></tr></table><p style="margin-top:20px;">Dokumen dihasilkan dari sistem KILASAN.id</p>`;
+            document.body.appendChild(detailDiv);
+            const opt = { margin: 0.5, filename: `Pengaduan_${complaint.id}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(detailDiv).save().then(() => detailDiv.remove()).catch(() => detailDiv.remove());
+        }
+
+        // Fungsi extract kelurahan tetap berfungsi meskipun ada RT/RW
+        function extractKelurahan(wilayahStr) {
+            if (!wilayahStr) return "Tidak diketahui";
+            const match = wilayahStr.match(/Kel\.\s*([^,]+)/i);
+            if (match) return match[1].trim();
+            const parts = wilayahStr.split(',');
+            return parts[parts.length - 1].trim();
+        }
+
+        function renderPage(pageName) {
+            const main = document.getElementById('mainContent');
+            if (pageName === 'dashboard') renderDashboard(main);
+            else if (pageName === 'pengaduan') renderPengaduan(main);
+            else if (pageName === 'petugas' && currentRole === 'superadmin') renderPetugas(main);
+            else if (pageName === 'feedback' && currentRole === 'superadmin') renderFeedback(main);
+            else renderDashboard(main);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderDashboard(container) {
+            const complaints = getComplaints();
+            const belum = complaints.filter(c => c.status === 'Belum Diproses').length;
+            const proses = complaints.filter(c => c.status === 'Sedang Diproses').length;
+            const selesai = complaints.filter(c => c.status === 'Selesai').length;
+            const ditolak = complaints.filter(c => c.status === 'Ditolak').length;
+            const diri = complaints.filter(c => c.jenisPelapor === 'diri-sendiri').length;
+            const orang = complaints.filter(c => c.jenisPelapor === 'orang-lain').length;
+            const sedikit = complaints.filter(c => c.tingkatKhawatir === 'Sedikit Khawatir').length;
+            const khawatir = complaints.filter(c => c.tingkatKhawatir === 'Khawatir').length;
+            const sangat = complaints.filter(c => c.tingkatKhawatir === 'Sangat Khawatir').length;
+            const kelurahanCount = {};
+            complaints.forEach(c => { const kel = extractKelurahan(c.wilayah); kelurahanCount[kel] = (kelurahanCount[kel] || 0) + 1; });
+            const kelurahanLabels = Object.keys(kelurahanCount);
+            const kelurahanData = Object.values(kelurahanCount);
+            container.innerHTML = `<div class="mb-4"><h5><i class="fas fa-chart-line"></i> Status Laporan</h5></div><div class="row g-4"><div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-hourglass-half"></i></div><div class="mt-3"><div class="card-title">BELUM DIPROSES</div><div class="card-value">${belum}</div></div></div></div></div><div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-spinner"></i></div><div class="mt-3"><div class="card-title">SEDANG DIPROSES</div><div class="card-value">${proses}</div></div></div></div></div><div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-check-circle"></i></div><div class="mt-3"><div class="card-title">SELESAI</div><div class="card-value">${selesai}</div></div></div></div></div><div class="col-sm-6 col-lg-3"><div class="stat-card"><div><div class="card-icon"><i class="fas fa-ban"></i></div><div class="mt-3"><div class="card-title">DITOLAK</div><div class="card-value">${ditolak}</div></div></div></div></div></div><div class="row mt-4"><div class="col-md-6"><div class="stat-card"><div class="d-flex align-items-center gap-3"><div class="card-icon"><i class="fas fa-user"></i></div><div><div class="card-title">DIRI SENDIRI</div><div class="card-value">${diri}</div></div></div></div></div><div class="col-md-6"><div class="stat-card"><div class="d-flex align-items-center gap-3"><div class="card-icon"><i class="fas fa-users"></i></div><div><div class="card-title">ORANG LAIN</div><div class="card-value">${orang}</div></div></div></div></div></div><div class="chart-container mt-4"><h6>📊 Tingkat Kekhawatiran Masyarakat</h6><canvas id="khChart" height="150"></canvas></div><div class="chart-container mt-4"><h6>🗺️ Jumlah Kekerasan per Kelurahan</h6><canvas id="wilayahChart" height="150"></canvas></div>`;
+            setTimeout(() => {
+                const ctx1 = document.getElementById('khChart')?.getContext('2d');
+                if (ctx1) { if (chartInstances.kh) chartInstances.kh.destroy(); chartInstances.kh = new Chart(ctx1, { type: 'bar', data: { labels: ['Sedikit Khawatir', 'Khawatir', 'Sangat Khawatir'], datasets: [{ label: 'Jumlah', data: [sedikit, khawatir, sangat], backgroundColor: ['#51b0ae', '#f4b942', '#dd6c4a'] }] } }); }
+                const ctx2 = document.getElementById('wilayahChart')?.getContext('2d');
+                if (ctx2) { if (chartInstances.wilayah) chartInstances.wilayah.destroy(); chartInstances.wilayah = new Chart(ctx2, { type: 'bar', data: { labels: kelurahanLabels, datasets: [{ label: 'Jumlah Laporan', data: kelurahanData, backgroundColor: '#2c628f' }] } }); }
+            }, 100);
+        }
+
+        function renderPengaduan(container) {
+            container.innerHTML = `<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+    <h5><i class="fas fa-table"></i> Seluruh Pengaduan</h5>
+
+    <div class="d-flex flex-column gap-2">
+    
+    <!-- SEARCH -->
+    <input type="text" id="searchPengaduanInput" 
+        class="form-control" 
+        placeholder="🔍 Cari..." 
+        style="border-radius:30px; max-width:250px;">
+
+    <!-- FILTER -->
+    <select id="filterStatus" 
+        class="form-select" 
+        style="border-radius:30px; max-width:250px;">
+        <option value="">Semua Status</option>
+        <option value="Belum Diproses">Belum Diproses</option>
+        <option value="Sedang Diproses">Sedang Diproses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Ditolak">Ditolak</option>
+    </select>
+
+</div>
+</div><div class="search-input"><input type="text" id="searchPengaduanInput" class="form-control" placeholder="🔍 Cari nama, kontak, wilayah..." style="border-radius:30px;"></div></div><div class="table-responsive-custom" id="tabelContainerPengaduan"><table class="table table-bordered align-middle" id="tabelPengaduan"><thead class="table-light"><tr><th>No</th><th>Tgl</th><th>Pelapor</th><th>Kontak</th><th>Wilayah</th><th>JK</th><th>Usia</th><th>Kekhawatiran</th><th>Kategori</th><th>Kronologi</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbodyPengaduan"></tbody></table></div><div class="d-flex justify-content-between align-items-center mt-3 flex-wrap"><div id="pengaduanInfo" class="text-muted small"></div><nav><ul class="pagination pagination-sm" id="pengaduanPagination"></ul></nav></div>`;
+            const searchInput = document.getElementById('searchPengaduanInput');
+            searchInput.value = pengaduanSearch;
+            searchInput.addEventListener('input', (e) => { pengaduanSearch = e.target.value; pengaduanPage = 1; renderPengaduanTable(); });
+            renderPengaduanTable();
+            const filterSelect = document.getElementById('filterStatus');
+            filterSelect.value = pengaduanStatusFilter;
+
+            filterSelect.addEventListener('change', (e) => {
+                pengaduanStatusFilter = e.target.value;
+                pengaduanPage = 1;
+                renderPengaduanTable();
+            });
+        }
+
+        function renderPengaduanTable() {
+            const complaints = getComplaints();
+            const filtered = complaints.filter(c => {
+                const matchSearch =
+                    c.nama?.toLowerCase().includes(pengaduanSearch.toLowerCase()) ||
+                    c.kontak?.includes(pengaduanSearch) ||
+                    c.wilayah?.toLowerCase().includes(pengaduanSearch.toLowerCase()) ||
+                    c.kronologi?.toLowerCase().includes(pengaduanSearch.toLowerCase());
+
+                const matchStatus =
+                    !pengaduanStatusFilter || c.status === pengaduanStatusFilter;
+
+                return matchSearch && matchStatus;
+            });
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / rowsPerPage);
+            if (pengaduanPage > totalPages) pengaduanPage = totalPages || 1;
+            const start = (pengaduanPage - 1) * rowsPerPage;
+            const pageData = filtered.slice(start, start + rowsPerPage);
+            const tbody = document.getElementById('tbodyPengaduan');
+            if (!tbody) return;
+            tbody.innerHTML = pageData.map((c, idx) => `<tr><td class="align-middle">${start + idx + 1}</td><td class="align-middle">${c.tanggal}</td><td class="align-middle">${c.nama || 'Anonim'}</td><td class="align-middle">${c.kontak}</td><td class="align-middle">${c.wilayah}</td><td class="align-middle">${c.jenisKelamin}</td><td class="align-middle">${c.usia}</td><td class="align-middle">${c.tingkatKhawatir}</td><td class="align-middle">${c.kategori || '-'}</td><td class="align-middle">${c.kronologi.substring(0, 40)}...</td>
+<td class="align-middle">
+    <select class="form-select form-select-sm status-select" data-id="${c.id}">
+        <option ${c.status === 'Belum Diproses' ? 'selected' : ''}>Belum Diproses</option>
+        <option ${c.status === 'Sedang Diproses' ? 'selected' : ''}>Sedang Diproses</option>
+        <option ${c.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
+        <option ${c.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
+    </select>
+</td><td class="align-middle"><button class="btn btn-sm btn-outline-primary detail-btn" data-id="${c.id}">Detail</button></td></tr>`).join('');
+            document.querySelectorAll('.status-select').forEach(sel => { sel.removeEventListener('change', handleStatusChange); sel.addEventListener('change', handleStatusChange); });
+            document.querySelectorAll('.detail-btn').forEach(btn => { btn.removeEventListener('click', handleDetailClick); btn.addEventListener('click', handleDetailClick); });
+            const startNum = total === 0 ? 0 : start + 1;
+            const endNum = Math.min(start + rowsPerPage, total);
+            document.getElementById('pengaduanInfo').innerText = `Menampilkan ${startNum} - ${endNum} dari ${total} data`;
+            const paginationUl = document.getElementById('pengaduanPagination');
+            if (paginationUl) {
+                paginationUl.innerHTML = '';
+                if (totalPages > 1) {
+                    paginationUl.innerHTML += `<li class="page-item ${pengaduanPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" data-page="prev">«</a></li>`;
+                    for (let i = 1; i <= totalPages; i++) {
+                        if (i === 1 || i === totalPages || (i >= pengaduanPage - 2 && i <= pengaduanPage + 2)) {
+                            paginationUl.innerHTML += `<li class="page-item ${i === pengaduanPage ? 'active' : ''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                        } else if (i === pengaduanPage - 3 || i === pengaduanPage + 3) paginationUl.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                    }
+                    paginationUl.innerHTML += `<li class="page-item ${pengaduanPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="#" data-page="next">»</a></li>`;
+                    paginationUl.querySelectorAll('.page-link').forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            let target = link.dataset.page;
+                            if (target === 'prev') { if (pengaduanPage > 1) pengaduanPage--; }
+                            else if (target === 'next') { if (pengaduanPage < totalPages) pengaduanPage++; }
+                            else pengaduanPage = parseInt(target);
+                            renderPengaduanTable();
+                        });
+                    });
+                }
+            }
+        }
+
+        function handleStatusChange(e) {
+            const id = e.target.dataset.id;
+            const newStatus = e.target.value;
+            let all = getComplaints();
+            const idx = all.findIndex(x => x.id === id);
+            if (idx !== -1) { all[idx].status = newStatus; saveComplaints(all); renderPengaduanTable(); }
+        }
+
+        let currentDetailComplaint = null;
+        function handleDetailClick(e) {
+            const id = e.target.dataset.id;
+            const comp = getComplaints().find(c => c.id === id);
+            if (comp) {
+                currentDetailComplaint = comp;
+                const modalBody = document.getElementById('detailModalBody');
+                modalBody.innerHTML = `<div class="row"><div class="col-6"><strong>ID:</strong> ${comp.id}</div><div class="col-6"><strong>Tanggal:</strong> ${comp.tanggal}</div><div class="col-12 mt-2"><strong>Nama Pelapor:</strong> ${comp.nama || 'Anonim'}</div><div class="col-6"><strong>Kontak:</strong> ${comp.kontak}</div><div class="col-6"><strong>Wilayah:</strong> ${comp.wilayah}</div><div class="col-6"><strong>Jenis Kelamin:</strong> ${comp.jenisKelamin}</div><div class="col-6"><strong>Usia:</strong> ${comp.usia}</div><div class="col-6"><strong>Tingkat Kekhawatiran:</strong> ${comp.tingkatKhawatir}</div><div class="col-6"><strong>Kategori:</strong> ${comp.kategori}</div><div class="col-12 mt-2"><strong>Kronologi:</strong> ${comp.kronologi}</div><div class="col-12 mt-2"><strong>Status:</strong> <span class="badge bg-secondary">${comp.status}</span></div></div>`;
+                const modal = new bootstrap.Modal(document.getElementById('detailComplaintModal'));
+                modal.show();
+            }
+        }
+
+        document.getElementById('modalDeleteComplaintBtn')?.addEventListener('click', () => {
+            if (currentDetailComplaint && confirm('Yakin hapus pengaduan ini?')) {
+                let all = getComplaints();
+                const filtered = all.filter(c => c.id !== currentDetailComplaint.id);
+                saveComplaints(filtered);
+                bootstrap.Modal.getInstance(document.getElementById('detailComplaintModal')).hide();
+                if (document.getElementById('tbodyPengaduan')) renderPengaduanTable();
+                else renderPage('pengaduan');
+            }
+        });
+        document.getElementById('modalExportPdfBtn')?.addEventListener('click', () => { if (currentDetailComplaint) exportSingleComplaintPDF(currentDetailComplaint); });
+
+        function renderPetugas(container) {
+            container.innerHTML = `<div class="d-flex justify-content-between align-items-center flex-wrap mb-3"><h5><i class="fas fa-users"></i> Manajemen Petugas Admin</h5><div class="search-input"><input type="text" id="searchPetugasInput" class="form-control" placeholder="🔍 Cari username / email"></div></div><div class="table-responsive-custom"><table class="table table-bordered align-middle"><thead class="table-light"><tr><th>No</th><th>Username</th><th>Email</th><th>Status Online</th><th>Terakhir Login</th><th>Aksi</th></tr></thead><tbody id="petugasBody"></tbody></table></div><div class="d-flex justify-content-between align-items-center mt-3"><div id="petugasInfo" class="text-muted small"></div><nav><ul class="pagination pagination-sm" id="petugasPagination"></ul></nav></div><button class="btn btn-primary mt-3" id="tambahPetugasBtn"><i class="fas fa-plus"></i> Tambah Petugas</button>`;
+            const searchInput = document.getElementById('searchPetugasInput');
+            if (searchInput) { searchInput.value = petugasSearch; searchInput.addEventListener('input', (e) => { petugasSearch = e.target.value; petugasPage = 1; renderPetugasTable(); }); }
+            renderPetugasTable();
+            document.getElementById('tambahPetugasBtn')?.addEventListener('click', () => {
+                let newUser = prompt("Masukkan username petugas baru:");
+                if (!newUser) return;
+                let newPass = prompt("Password:");
+                let newEmail = prompt("Email:");
+                let userList = getUsers();
+                if (userList.find(u => u.username === newUser)) { alert("Username sudah ada!"); return; }
+                userList.push({ username: newUser, password: newPass, email: newEmail, role: "admin", avatar: "", lastLogin: null });
+                saveUsers(userList);
+                renderPetugasTable();
+            });
+        }
+
+        function renderPetugasTable() {
+            const users = getUsers().filter(u => u.role === 'admin');
+            const filtered = users.filter(u => u.username.toLowerCase().includes(petugasSearch.toLowerCase()) || u.email.toLowerCase().includes(petugasSearch.toLowerCase()));
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / rowsPerPage);
+            if (petugasPage > totalPages) petugasPage = totalPages || 1;
+            const start = (petugasPage - 1) * rowsPerPage;
+            const pageData = filtered.slice(start, start + rowsPerPage);
+            const tbody = document.getElementById('petugasBody');
+            if (!tbody) return;
+            const now = new Date();
+            tbody.innerHTML = pageData.map((u, idx) => { const rowNum = start + idx + 1; let last = u.lastLogin ? new Date(u.lastLogin) : null; let online = last && (now - last) < 5 * 60 * 1000; return `<tr><td class="align-middle">${rowNum}</td><td class="align-middle">${u.username}</td><td class="align-middle">${u.email}</td><td class="align-middle"><span class="badge ${online ? 'bg-success' : 'bg-secondary'}">${online ? 'Online' : 'Offline'}</span></td><td class="align-middle">${u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td><td class="align-middle"><button class="btn btn-sm btn-danger hapusPetugas" data-user="${u.username}">Hapus</button></td></tr>`; }).join('');
+            document.querySelectorAll('.hapusPetugas').forEach(btn => { btn.removeEventListener('click', handleHapusPetugas); btn.addEventListener('click', handleHapusPetugas); });
+            const startNum = total === 0 ? 0 : start + 1, endNum = Math.min(start + rowsPerPage, total);
+            document.getElementById('petugasInfo').innerText = `Menampilkan ${startNum} - ${endNum} dari ${total} data`;
+            const paginationUl = document.getElementById('petugasPagination');
+            if (paginationUl) {
+                paginationUl.innerHTML = '';
+                if (totalPages > 1) {
+                    paginationUl.innerHTML += `<li class="page-item ${petugasPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" data-page="prev-p">«</a></li>`;
+                    for (let i = 1; i <= totalPages; i++) {
+                        if (i === 1 || i === totalPages || (i >= petugasPage - 2 && i <= petugasPage + 2))
+                            paginationUl.innerHTML += `<li class="page-item ${i === petugasPage ? 'active' : ''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                        else if (i === petugasPage - 3 || i === petugasPage + 3) paginationUl.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                    }
+                    paginationUl.innerHTML += `<li class="page-item ${petugasPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="#" data-page="next-p">»</a></li>`;
+                    paginationUl.querySelectorAll('.page-link').forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            let target = link.dataset.page;
+                            if (target === 'prev-p') { if (petugasPage > 1) petugasPage--; }
+                            else if (target === 'next-p') { if (petugasPage < totalPages) petugasPage++; }
+                            else petugasPage = parseInt(target);
+                            renderPetugasTable();
+                        });
+                    });
+                }
+            }
+        }
+
+        function handleHapusPetugas(e) { const username = e.target.dataset.user; if (confirm(`Hapus petugas ${username}?`)) { let usersAll = getUsers(); let filtered = usersAll.filter(u => u.username !== username); saveUsers(filtered); renderPetugasTable(); } }
+
+        function renderFeedback(container) {
+            let feedbacks = getFeedbacks();
+            container.innerHTML = `<h5><i class="fas fa-comment-dots"></i> Feedback Pengguna</h5><div class="table-responsive-custom"><table class="table table-bordered"><thead><tr><th>Nama</th><th>Email</th><th>Pesan</th><th>Tanggal</th></tr></thead><tbody>${feedbacks.map(f => `<tr><td>${f.name}</td><td>${f.email}</td><td>${f.message}</td><td>${new Date(f.date).toLocaleString()}</td></tr>`).join('')}</tbody>}</table></div>`;
+        }
+
+        function updateMenuByRole() {
+            const isSuper = currentRole === 'superadmin';
+            const menuPetugas = document.getElementById('menuPetugas');
+            const menuFeedback = document.getElementById('menuFeedback');
+            if (menuPetugas) menuPetugas.style.display = isSuper ? 'block' : 'none';
+            if (menuFeedback) menuFeedback.style.display = isSuper ? 'block' : 'none';
+            document.querySelectorAll('#navMenuList .nav-link-custom').forEach(link => { link.removeEventListener('click', handleMenuClick); link.addEventListener('click', handleMenuClick); });
+            const active = document.querySelector('#navMenuList .nav-link-custom[data-page="dashboard"]');
+            if (active) active.classList.add('active-nav');
+            renderPage('dashboard');
+        }
+
+        function handleMenuClick(e) { e.preventDefault(); const page = this.dataset.page; if (page) renderPage(page); document.querySelectorAll('#navMenuList .nav-link-custom').forEach(l => l.classList.remove('active-nav')); this.classList.add('active-nav'); if (window.innerWidth < 992) closeSidebar(); }
+
+        function handleLogin(e) { e.preventDefault(); const username = document.getElementById('loginUsername').value.trim(); const pwd = document.getElementById('loginPassword').value.trim(); const users = getUsers(); const user = users.find(u => u.username === username && u.password === pwd); if (user) { currentUser = user; currentRole = user.role; user.lastLogin = new Date().toISOString(); saveUsers(users); document.getElementById('loginPanel').style.display = 'none'; document.getElementById('dashboardApp').style.display = 'block'; document.getElementById('sidebarUsername').innerText = user.username; updateMenuByRole(); } else alert('Username atau password salah!'); }
+        function handleRegister(e) { e.preventDefault(); const username = document.getElementById('regUsername').value.trim(); const email = document.getElementById('regEmail').value.trim(); const password = document.getElementById('regPassword').value.trim(); const role = document.getElementById('regRole').value; if (!username || !email || !password) { alert("Lengkapi semua data"); return; } let users = getUsers(); if (users.find(u => u.username === username)) { alert("Username sudah ada"); return; } users.push({ username, password, email, role, avatar: "", lastLogin: null }); saveUsers(users); alert("Registrasi berhasil, silakan login."); toggleToLogin(); }
+        function logout() { currentUser = null; document.getElementById('loginPanel').style.display = 'flex'; document.getElementById('dashboardApp').style.display = 'none'; if (window.innerWidth < 992) closeSidebar(); }
+        function toggleToRegister() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; document.getElementById('formTitle').innerText = 'Buat Akun'; }
+        function toggleToLogin() { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; document.getElementById('formTitle').innerText = 'Selamat Datang'; }
+
+        // Sidebar toggle responsif
+        const sidebar = document.getElementById('mainSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        function openSidebar() { if (window.innerWidth < 992) { sidebar.classList.add('show'); overlay.classList.add('active'); } else { sidebar.classList.toggle('sidebar-closed'); } }
+        function closeSidebar() { if (window.innerWidth < 992) { sidebar.classList.remove('show'); overlay.classList.remove('active'); } else { sidebar.classList.remove('sidebar-closed'); } }
+        document.getElementById('toggleSidebarBtn').addEventListener('click', (e) => { if (window.innerWidth < 992) { sidebar.classList.toggle('show'); overlay.classList.toggle('active'); } else { sidebar.classList.toggle('sidebar-closed'); } });
+        overlay.addEventListener('click', closeSidebar);
+        window.addEventListener('resize', function () { if (window.innerWidth >= 992) { sidebar.classList.remove('show'); overlay.classList.remove('active'); } });
+
+        // ======================= FITUR SHOW/HIDE PASSWORD =======================
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (input) {
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    this.classList.toggle('fa-eye-slash');
+                }
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        document.getElementById('registerForm').addEventListener('submit', handleRegister);
+        document.getElementById('showRegisterLink').addEventListener('click', toggleToRegister);
+        document.getElementById('showLoginLink').addEventListener('click', toggleToLogin);
+        document.getElementById('realLogoutBtn').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+        document.getElementById('saveProfileBtn')?.addEventListener('click', () => { let newUsername = document.getElementById('profileUsername').value; let newEmail = document.getElementById('profileEmail').value; let newPass = document.getElementById('profilePassword').value; let users = getUsers(); let idx = users.findIndex(u => u.username === currentUser.username); if (idx !== -1) { if (newUsername !== currentUser.username && users.find(u => u.username === newUsername)) alert("Username sudah dipakai"); else { users[idx].username = newUsername; users[idx].email = newEmail; if (newPass) users[idx].password = newPass; saveUsers(users); currentUser = users[idx]; document.getElementById('sidebarUsername').innerText = currentUser.username; alert("Profil diperbarui"); } } bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide(); });
+        document.getElementById('navAvatarBtn')?.addEventListener('click', () => { document.getElementById('profileUsername').value = currentUser.username; document.getElementById('profileEmail').value = currentUser.email || ''; document.getElementById('profilePassword').value = ''; });
+
+    </script>
 </body>
+
 </html>
