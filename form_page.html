@@ -7,8 +7,8 @@
     <!-- Bootstrap 5 + FontAwesome + Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Fira+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- reCAPTCHA API - menggunakan key testing yang support localhost -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- reCAPTCHA API - key testing support localhost -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         html, body { height: 100%; }
@@ -19,19 +19,22 @@
             background: #fff;
             color: #1f2a3e;
         }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Rubik', sans-serif; font-weight: 700; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700; }
         .main-content { flex: 1 0 auto; }
         .main-header { background: #fff; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .navbar-brand img { max-height: 50px; }
+        .navbar-brand img { max-height: 80px; }
         .nav-link { font-weight: 500; color: #1f2a3e; }
+        
+        /* Footer warna biru baru #3e74b4 */
         .footer {
             flex-shrink: 0;
-            background: #0f172a;
-            color: #adb7c9;
+            background: #3e74b4;
+            color: #f0f4fa;
             padding: 40px 0 20px;
         }
-        .footer a { color: #adb7c9; text-decoration: none; }
+        .footer a { color: #f0f4fa; text-decoration: none; }
         .footer a:hover { color: white; }
+        
         .choice-card {
             border: 2px solid #dee2e6;
             border-radius: 16px;
@@ -86,7 +89,6 @@
                 padding: 1rem;
             }
         }
-        /* Toast custom */
         .toast-success {
             position: fixed;
             bottom: 20px;
@@ -106,6 +108,10 @@
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        /* style untuk opsi lainnya */
+        .extra-input {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -222,7 +228,7 @@
             </div>
         </div>
 
-        <!-- BAGIAN 3: FORM LAPORAN -->
+        <!-- BAGIAN 3: FORM LAPORAN (diperluas) -->
         <div id="form-pengaduan" class="mt-5">
             <div class="card shadow-sm p-4">
                 <h2 class="fw-bold mb-4">Laporkan Kekerasan</h2>
@@ -240,7 +246,7 @@
                         <input type="text" class="form-control" id="kontak" name="kontak" placeholder="08xxxxxxxxxx" required>
                     </div>
 
-                    <!-- DATA LOKASI lengkap dengan background putih -->
+                    <!-- DATA LOKASI lengkap -->
                     <div class="mb-3 data-lokasi-box">
                         <label class="form-label fw-bold mb-3">Data Lokasi <span class="text-danger">*</span></label>
                         <div class="row g-3">
@@ -321,16 +327,79 @@
                             <option>Lainnya</option>
                         </select>
                     </div>
+
+                    <!-- TEMPAT KEJADIAN (baru) -->
+                    <div class="mb-3">
+                        <label for="tempat_kejadian" class="form-label fw-bold">Tempat Kejadian</label>
+                        <select class="form-select" id="tempat_kejadian" name="tempat_kejadian">
+                            <option value="">-- Pilih --</option>
+                            <option value="Sekolah">Sekolah</option>
+                            <option value="Rumah">Rumah</option>
+                            <option value="Tempat Kerja">Tempat Kerja</option>
+                            <option value="Tempat Ibadah">Tempat Ibadah</option>
+                            <option value="Tempat Kursus">Tempat Kursus</option>
+                            <option value="Lainnya">Lainnya (isi sendiri)</option>
+                        </select>
+                        <div id="tempat_lainnya_container" style="display:none;" class="mt-2">
+                            <label class="form-label small fw-semibold">Sebutkan tempat kejadian</label>
+                            <input type="text" class="form-control" id="tempat_lainnya" placeholder="Contoh: Jalan raya, angkutan umum, dll">
+                        </div>
+                    </div>
+
+                    <!-- [BARU] WAKTU KEJADIAN -->
+                    <div class="mb-3">
+                        <label for="waktu_kejadian" class="form-label fw-bold">Kapan Terjadinya?</label>
+                        <select class="form-select" id="waktu_kejadian" name="waktu_kejadian">
+                            <option value="">-- Pilih --</option>
+                            <option>Pagi</option>
+                            <option>Siang</option>
+                            <option>Sore</option>
+                            <option>Malam</option>
+                        </select>
+                    </div>
+
+                    <!-- SIAPA PELAKU (baru) -->
+                    <div class="mb-3">
+                        <label for="pelaku" class="form-label fw-bold">Siapa Pelaku</label>
+                        <select class="form-select" id="pelaku" name="pelaku">
+                            <option value="">-- Pilih --</option>
+                            <option value="Orang tidak dikenal">Orang tidak dikenal</option>
+                            <option value="Kenalan baru">Kenalan baru</option>
+                            <option value="Ibu kandung">Ibu kandung</option>
+                            <option value="Ibu tiri">Ibu tiri</option>
+                            <option value="Ayah kandung">Ayah kandung</option>
+                            <option value="Ayah tiri">Ayah tiri</option>
+                            <option value="Kakak/Abang">Kakak/Abang</option>
+                            <option value="Adik">Adik</option>
+                            <option value="Guru">Guru</option>
+                            <option value="Pengasuh">Pengasuh</option>
+                            <option value="Rekan kerja">Rekan kerja</option>
+                            <option value="Pacar">Pacar</option>
+                            <option value="Lainnya">Lainnya (isi sendiri)</option>
+                        </select>
+                        <div id="pelaku_lainnya_container" style="display:none;" class="mt-2">
+                            <label class="form-label small fw-semibold">Sebutkan pelaku lainnya</label>
+                            <input type="text" class="form-control" id="pelaku_lainnya" placeholder="Contoh: Tetangga, paman, dll">
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="kronologi" class="form-label fw-bold">Kronologi Singkat</label>
-                        <textarea class="form-control" id="kronologi" name="kronologi" rows="5" placeholder="Ceritakan apa yang terjadi..."></textarea>
+                        <textarea class="form-control" id="kronologi" name="kronologi" rows="4" placeholder="Ceritakan apa yang terjadi..."></textarea>
                     </div>
+
+                    <!-- SARAN (baru) -->
+                    <div class="mb-3">
+                        <label for="saran" class="form-label fw-bold">Saran / Masukan (opsional)</label>
+                        <textarea class="form-control" id="saran" name="saran" rows="2" placeholder="Tulis saran Anda untuk KILASAN..."></textarea>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">Bukti Pendukung (foto, video, dll)</label>
                         <input type="file" class="form-control" id="bukti" name="bukti" multiple>
                     </div>
 
-                    <!-- reCAPTCHA key testing support localhost -->
+                    <!-- reCAPTCHA -->
                     <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                     <small class="text-muted d-block mb-2">* reCAPTCHA ini menggunakan key testing. Untuk keperluan production, ganti dengan site key Anda sendiri dari <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA Admin</a>.</small>
                     
@@ -341,12 +410,12 @@
     </div>
 </div>
 
-<!-- Footer -->
+<!-- Footer dengan warna biru #3e74b4 -->
 <footer class="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img src="asset/logokilasan.png" alt="logo" style="max-height: 75px;">
+                <img src="asset/logokilasan.png" alt="logo" style="max-height: 75px; filter: brightness(0) invert(1);">
                 <p class="mt-3">KILASAN adalah layanan Kementerian PPPA untuk menangani kekerasan terhadap perempuan dan anak. Hotline 129, WhatsApp 0811-129-129.</p>
             </div>
             <div class="col-md-3">
@@ -372,15 +441,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // ======================= KONEKSI KE BACKEND (localStorage) =======================
-    // Fungsi untuk mengambil dan menyimpan data pengaduan (sama seperti di admin panel)
-    function getComplaints() { 
-        return JSON.parse(localStorage.getItem('kilasan_complaints') || '[]'); 
-    }
-    function saveComplaints(complaints) { 
-        localStorage.setItem('kilasan_complaints', JSON.stringify(complaints)); 
-    }
+    function getComplaints() { return JSON.parse(localStorage.getItem('kilasan_complaints') || '[]'); }
+    function saveComplaints(complaints) { localStorage.setItem('kilasan_complaints', JSON.stringify(complaints)); }
 
-    // Generate ID unik untuk pengaduan baru
     function generateComplaintId() {
         const existing = getComplaints();
         const maxId = existing.reduce((max, c) => {
@@ -391,24 +454,36 @@
         return `C${newNum.toString().padStart(3, '0')}`;
     }
 
-    // Format tanggal sekarang YYYY-MM-DD
     function getTodayDate() {
         const today = new Date();
         return today.toISOString().split('T')[0];
     }
 
-    // Event submit form: simpan ke localStorage
-    document.getElementById('report-form').addEventListener('submit', function(e) {
+    // Helper: baca file sebagai base64
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                name: file.name,
+                type: file.type,
+                data: reader.result
+            });
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Event submit form
+    document.getElementById('report-form').addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        // Validasi reCAPTCHA (hanya untuk key testing, tetap wajib)
         const recaptchaResponse = grecaptcha.getResponse();
         if (recaptchaResponse.length === 0) {
             alert('Mohon selesaikan verifikasi reCAPTCHA terlebih dahulu.');
             return;
         }
 
-        // Validasi field wajib
+        // Validasi wajib
         const kontak = document.getElementById('kontak').value.trim();
         const kota = document.getElementById('kota').value;
         const kec = document.getElementById('kecamatan').value;
@@ -423,14 +498,42 @@
         if (!kota || !kec || !kel || !rt || !rw) { alert('Harap lengkapi Data Lokasi: Kota, Kecamatan, Kelurahan, RT dan RW.'); return; }
         if (!jenisKelamin || !usia || !tingkat) { alert('Harap lengkapi Jenis Kelamin, Usia, dan Tingkat Kekhawatiran.'); return; }
 
-        // Ambil nilai dari form
         const nama = document.getElementById('nama').value.trim() || 'Anonim';
         const wilayahCombined = document.getElementById('wilayah_combined').value;
         const kategori = document.getElementById('kategori').value || '-';
         const kronologi = document.getElementById('kronologi').value.trim() || '-';
         const jenisPelapor = document.getElementById('jenis_pelapor').value;
+        
+        // Data baru
+        let tempatKejadian = document.getElementById('tempat_kejadian').value;
+        if (tempatKejadian === 'Lainnya') {
+            const tempatLain = document.getElementById('tempat_lainnya').value.trim();
+            tempatKejadian = tempatLain ? `Lainnya: ${tempatLain}` : 'Lainnya (tidak diisi)';
+        }
+        let pelaku = document.getElementById('pelaku').value;
+        if (pelaku === 'Lainnya') {
+            const pelakuLain = document.getElementById('pelaku_lainnya').value.trim();
+            pelaku = pelakuLain ? `Lainnya: ${pelakuLain}` : 'Lainnya (tidak diisi)';
+        }
+        const saran = document.getElementById('saran').value.trim() || '-';
+        const waktuKejadian = document.getElementById('waktu_kejadian').value || '-';
 
-        // Buat objek pengaduan sesuai struktur admin panel
+        // Proses bukti (file)
+        const fileInput = document.getElementById('bukti');
+        const files = fileInput.files;
+        let buktiArray = [];
+        if (files.length > 0) {
+            try {
+                for (let i = 0; i < files.length; i++) {
+                    const fileData = await readFileAsBase64(files[i]);
+                    buktiArray.push(fileData);
+                }
+            } catch (err) {
+                alert('Gagal membaca file bukti. Silakan coba lagi.');
+                return;
+            }
+        }
+
         const newComplaint = {
             id: generateComplaintId(),
             tanggal: getTodayDate(),
@@ -443,42 +546,44 @@
             kategori: kategori,
             kronologi: kronologi,
             status: "Belum Diproses",
-            jenisPelapor: jenisPelapor
+            jenisPelapor: jenisPelapor,
+            tempatKejadian: tempatKejadian,
+            pelaku: pelaku,
+            saran: saran,
+            waktuKejadian: waktuKejadian,
+            bukti: buktiArray   // <-- menyimpan array base64
         };
 
-        // Simpan ke localStorage
         const complaints = getComplaints();
         complaints.push(newComplaint);
         saveComplaints(complaints);
 
-        // Tampilkan notifikasi sukses
         const toast = document.createElement('div');
         toast.className = 'toast-success';
         toast.innerHTML = `<i class="fas fa-check-circle"></i> Laporan berhasil dikirim! ID: ${newComplaint.id}<br><small>Terima kasih, laporan Anda akan segera diproses.</small>`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 5000);
 
-        // Reset form dan kembali ke pilihan awal (opsional)
+        // Reset form
         document.getElementById('report-form').reset();
         document.getElementById('form-pengaduan').style.display = 'none';
         document.getElementById('initial-choice').style.display = 'block';
         document.getElementById('report-type-choice').style.display = 'none';
-        // Reset hidden jenis pelapor
         document.getElementById('jenis_pelapor').value = '';
-        // Reset ulang pilihan lokasi default
+        // Reset lokasi ke default
         document.getElementById('kota').value = "Jakarta Barat";
-        triggerKotaChange(); // panggil function dari bawah untuk sinkron
+        triggerKotaChange();
         document.getElementById('rt').value = "RT 01";
         document.getElementById('rw').value = "RW 01";
         updateCombinedLocation();
-        // Reset reCAPTCHA
         grecaptcha.reset();
-
-        // Scroll ke atas agar user melihat pilihan awal
+        // Sembunyikan input tambahan
+        document.getElementById('tempat_lainnya_container').style.display = 'none';
+        document.getElementById('pelaku_lainnya_container').style.display = 'none';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // ======================= DATA WILAYAH JAKARTA LENGKAP (SEMUA KELURAHAN) =======================
+    // ======================= DATA WILAYAH JAKARTA (SAMA SEPERTI SEBELUMNYA) =======================
     const dataWilayah = {
         "Jakarta Barat": {
             kecamatan: ["Kembangan", "Cengkareng", "Kalideres", "Tambora", "Grogol Petamburan", "Palmerah", "Kebon Jeruk"],
@@ -555,7 +660,6 @@
         }
     };
 
-    // DOM elements
     const kotaSelect = document.getElementById('kota');
     const kecamatanSelect = document.getElementById('kecamatan');
     const kelurahanSelect = document.getElementById('kelurahan');
@@ -563,7 +667,6 @@
     const rwSelect = document.getElementById('rw');
     const hiddenWilayah = document.getElementById('wilayah_combined');
 
-    // Populate RT / RW (1-20)
     function populateRtRw() {
         for (let i = 1; i <= 20; i++) {
             let val = i < 10 ? '0' + i : '' + i;
@@ -589,9 +692,7 @@
         kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
         kelurahanSelect.disabled = true;
         kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
-        
         if (!selectedKota || !dataWilayah[selectedKota]) return;
-        
         dataWilayah[selectedKota].kecamatan.forEach(kec => {
             let opt = document.createElement('option');
             opt.value = kec;
@@ -599,7 +700,6 @@
             kecamatanSelect.appendChild(opt);
         });
         kecamatanSelect.disabled = false;
-        
         if (selectedKota === "Jakarta Barat") {
             kecamatanSelect.value = "Kembangan";
             triggerKecamatanChange();
@@ -615,9 +715,7 @@
         const selectedKec = kecamatanSelect.value;
         kelurahanSelect.disabled = true;
         kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
-        
         if (!selectedKota || !selectedKec || !dataWilayah[selectedKota]?.kelurahan[selectedKec]) return;
-        
         dataWilayah[selectedKota].kelurahan[selectedKec].forEach(kel => {
             let opt = document.createElement('option');
             opt.value = kel;
@@ -625,7 +723,6 @@
             kelurahanSelect.appendChild(opt);
         });
         kelurahanSelect.disabled = false;
-        
         if (selectedKota === "Jakarta Barat" && selectedKec === "Kembangan") {
             kelurahanSelect.value = "Meruya Utara";
         }
@@ -654,7 +751,30 @@
     rwSelect.value = "RW 01";
     updateCombinedLocation();
 
-    // Global functions untuk navigasi form
+    // Event untuk menampilkan input "Lainnya"
+    const tempatKejadianSelect = document.getElementById('tempat_kejadian');
+    const tempatLainnyaContainer = document.getElementById('tempat_lainnya_container');
+    const pelakuSelect = document.getElementById('pelaku');
+    const pelakuLainnyaContainer = document.getElementById('pelaku_lainnya_container');
+
+    tempatKejadianSelect.addEventListener('change', function() {
+        if (this.value === 'Lainnya') {
+            tempatLainnyaContainer.style.display = 'block';
+        } else {
+            tempatLainnyaContainer.style.display = 'none';
+            document.getElementById('tempat_lainnya').value = '';
+        }
+    });
+
+    pelakuSelect.addEventListener('change', function() {
+        if (this.value === 'Lainnya') {
+            pelakuLainnyaContainer.style.display = 'block';
+        } else {
+            pelakuLainnyaContainer.style.display = 'none';
+            document.getElementById('pelaku_lainnya').value = '';
+        }
+    });
+
     window.showReportType = function() {
         document.getElementById('initial-choice').style.display = 'none';
         document.getElementById('report-type-choice').style.display = 'block';

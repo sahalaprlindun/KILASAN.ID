@@ -20,12 +20,20 @@
         .main-header { background: #fff; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         .navbar-brand img { max-height: 80px; }
         .nav-link { font-weight: 500; color: #1f2a3e; }
-        .hero-slider { background: linear-gradient(135deg, #1e2a47 0%, #0f172a 100%); color: white; padding: 80px 0; }
+        
+        /* Hero section - warna biru diubah menjadi #4d7cb9 */
+        .hero-slider { background: #3e74b4; color: white; padding: 80px 0; }
+        
         .hero-content h2 { font-size: 3rem; font-weight: 800; }
         .hero-content p { font-size: 1.1rem; margin-top: 1rem; }
-        .footer { background: #0f172a; color: #adb7c9; padding: 40px 0 20px; }
-        .footer a { color: #adb7c9; text-decoration: none; }
+        
+        /* Footer - warna biru diubah menjadi #3e74b4 */
+        .footer { background: #3e74b4; color: #f0f4fa; padding: 40px 0 20px; }
+        .footer a { color: #f0f4fa; text-decoration: none; }
         .footer a:hover { color: white; }
+        
+        /* CTA section di atas footer juga biru */
+        .cta-section { background-color: #3e74b4; }
         
         /* Floating buttons */
         .floating-btn { position: fixed; left: 20px; background: white; border-radius: 50%; width: 70px; height: 70px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: 0.2s; }
@@ -67,7 +75,7 @@
             padding-left: 0 !important;
             padding-right: 0 !important;
             max-width: 100%;
-            margin-bottom: 20px; /* tambahan ruang bawah agar indikator tidak mepet */
+            margin-bottom: 20px;
         }
         .carousel-jenis {
             padding-left: 0;
@@ -75,7 +83,7 @@
         }
         .carousel-jenis .carousel-inner {
             border-radius: 0;
-            margin-bottom: 20px; /* jarak antara card dan indikator */
+            margin-bottom: 20px;
         }
         .carousel-jenis .carousel-item .card {
             margin: 0 auto;
@@ -86,7 +94,7 @@
             aspect-ratio: 21 / 10;
             display: flex;
             flex-direction: column;
-            padding: 1rem 1.8rem;  /* pad lebih lega horizontal */
+            padding: 1rem 1.8rem;
             color: white;
             transition: transform 0.3s, box-shadow 0.3s;
             background-size: cover;
@@ -105,7 +113,6 @@
             border-radius: 28px;
             z-index: -1;
         }
-        /* Ukuran ikon dan teks disesuaikan dengan card lebar */
         .carousel-jenis .card-icon { font-size: 2.5rem; margin-bottom: 0.3rem; text-align: center; }
         .carousel-jenis .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; text-align: center; }
         .carousel-jenis .card-desc { font-size: 1rem; line-height: 1.4; text-align: center; margin-bottom: 0.5rem; }
@@ -130,9 +137,8 @@
             padding: 12px;
             background-size: 45% 45%;
         }
-        /* Indikator diberi jarak lebih turun */
         .carousel-indicators {
-            bottom: -50px;   /* lebih turun dari sebelumnya (-35px) */
+            bottom: -50px;
         }
         .carousel-indicators button {
             background-color: #dc3545 !important;
@@ -183,7 +189,7 @@
     </nav>
 </header>
 
-<!-- Hero section -->
+<!-- Hero section dengan warna biru baru -->
 <section class="hero-slider">
     <div class="container">
         <div class="row align-items-center">
@@ -206,7 +212,7 @@
             <div class="text-danger fw-bold">Cara Melapor:</div>
             <div class="d-flex gap-3 mt-4">
                 <div><i class="fas fa-phone-alt fa-2x text-danger"></i><br><strong>Layanan Cepat</strong><br>Hotline 129</div>
-                <div><i class="fab fa-whatsapp fa-2x text-danger"></i><br><strong>WhatsApp</strong><br>0811-129-129</div>
+                <div><i class="fab fa-whatsapp fa-2x" style="color: #25D366;"></i><br><strong>WhatsApp</strong><br>0811-129-129</div>
                 <div><i class="fas fa-file-alt fa-2x text-danger"></i><br><strong>Form Online</strong><br>24 jam</div>
             </div>
             <a href="form_page.html" class="thm-btn mt-4">Lapor Sekarang</a>
@@ -214,7 +220,7 @@
     </div>
 </section>
 
-<!-- Kapan Harus Lapor (3 kartu statis) -->
+<!-- Kapan Harus Lapor -->
 <section class="container py-5" id="kapan-lapor">
     <div class="section-title text-center">
         <h2 class="title">Kapan Anda Harus Menghubungi KILASAN?</h2>
@@ -241,7 +247,7 @@
     </div>
 </section>
 
-<!-- ========== CAROUSEL JENIS KEKERASAN (PERSEGI PANJANG, UKURAN TEKS BESAR, INDICATOR TURUN) ========== -->
+<!-- Carousel Jenis Kekerasan -->
 <section class="py-5" id="jenis-kekerasan">
     <div class="container">
         <div class="section-title text-center">
@@ -323,18 +329,18 @@
     </div>
 </section>
 
-<!-- Modal detail (sama) -->
+<!-- Modal detail -->
 <div class="modal fade" id="modalFisik" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Fisik</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan fisik adalah tindakan yang dilakukan dengan menggunakan kekuatan fisik yang dapat menyebabkan rasa sakit, cedera, atau kerusakan pada tubuh seseorang. Bentuk kekerasan ini meliputi memukul, menendang, menampar, mencekik, atau tindakan lain yang melukai tubuh korban. Kekerasan fisik dapat terjadi dalam berbagai lingkungan, seperti keluarga, sekolah, maupun tempat kerja, dan sering kali meninggalkan dampak jangka pendek maupun jangka panjang, baik secara fisik maupun psikologis. Dalam konteks hukum, kekerasan fisik termasuk dalam tindak pidana penganiayaan yang diatur dalam Kitab Undang-Undang Hukum Pidana (KUHP), dengan ancaman hukuman yang bervariasi tergantung pada tingkat luka yang ditimbulkan. Jika terjadi dalam lingkup rumah tangga, maka juga dapat dijerat dengan Undang-Undang Penghapusan Kekerasan dalam Rumah Tangga (UU PKDRT).</div></div></div>
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Fisik</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan fisik adalah tindakan yang dilakukan dengan menggunakan kekuatan fisik yang dapat menyebabkan rasa sakit, cedera, atau kerusakan pada tubuh seseorang. Bentuk kekerasan ini meliputi memukul, menendang, menampar, mencekik, atau tindakan lain yang melukai tubuh korban. Kekerasan fisik dapat terjadi dalam berbagai lingkungan, seperti keluarga, sekolah, maupun tempat kerja, dan sering kali meninggalkan dampak jangka pendek maupun jangka panjang, baik secara fisik maupun psikologis. Dalam konteks hukum, kekerasan fisik termasuk dalam tindak pidana penganiayaan yang diatur dalam Kitab Undang-Undang Hukum Pidana (KUHP), dengan ancaman hukuman yang bervariasi tergantung pada tingkat luka yang ditimbulkan. Jika terjadi dalam lingkup rumah tangga, maka juga dapat dijerat dengan Undang-Undang Penghapusan Kekerasan dalam Rumah Tangga (UU PKDRT).</div></div></div>
 </div>
 <div class="modal fade" id="modalPsikis" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Psikis</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan psikis merupakan tindakan yang menyerang kondisi mental atau emosional seseorang sehingga menimbulkan rasa takut, rendah diri, stres, atau gangguan psikologis lainnya. Bentuk kekerasan ini sering kali tidak terlihat secara fisik, tetapi dampaknya sangat besar, seperti penghinaan, ancaman, intimidasi, manipulasi, hingga pengucilan. Kekerasan psikis dapat menyebabkan korban kehilangan kepercayaan diri, mengalami depresi, bahkan gangguan kesehatan mental yang serius. Dalam hukum Indonesia, kekerasan psikis diakui sebagai bentuk kekerasan yang dapat diproses secara hukum, terutama dalam Undang-Undang Penghapusan Kekerasan dalam Rumah Tangga (UU PKDRT) serta diperkuat dalam Undang-Undang Tindak Pidana Kekerasan Seksual (UU TPKS) yang juga mengakui dampak psikis sebagai bagian dari penderitaan korban yang harus dilindungi.</div></div></div>
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Psikis</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan psikis merupakan tindakan yang menyerang kondisi mental atau emosional seseorang sehingga menimbulkan rasa takut, rendah diri, stres, atau gangguan psikologis lainnya. Bentuk kekerasan ini sering kali tidak terlihat secara fisik, tetapi dampaknya sangat besar, seperti penghinaan, ancaman, intimidasi, manipulasi, hingga pengucilan. Kekerasan psikis dapat menyebabkan korban kehilangan kepercayaan diri, mengalami depresi, bahkan gangguan kesehatan mental yang serius. Dalam hukum Indonesia, kekerasan psikis diakui sebagai bentuk kekerasan yang dapat diproses secara hukum, terutama dalam Undang-Undang Penghapusan Kekerasan dalam Rumah Tangga (UU PKDRT) serta diperkuat dalam Undang-Undang Tindak Pidana Kekerasan Seksual (UU TPKS) yang juga mengakui dampak psikis sebagai bagian dari penderitaan korban yang harus dilindungi.</div></div></div>
 </div>
 <div class="modal fade" id="modalSeksual" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Seksual</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan seksual merupakan segala bentuk perbuatan yang merendahkan, menghina, menyerang, atau tindakan lain terhadap tubuh, hasrat seksual, dan fungsi reproduksi seseorang yang dilakukan tanpa persetujuan. Tindakan ini dapat terjadi dalam berbagai bentuk, baik secara fisik maupun nonfisik, seperti pelecehan seksual, pemerkosaan, eksploitasi seksual, hingga kekerasan seksual berbasis digital. Dalam Undang-Undang Tindak Pidana Kekerasan Seksual (UU TPKS) dijelaskan bahwa kekerasan seksual tidak hanya mencakup tindakan yang bersifat langsung, tetapi juga mencakup perbuatan yang dilakukan melalui paksaan, ancaman, manipulasi, maupun penyalahgunaan kekuasaan yang mengakibatkan penderitaan fisik, psikis, seksual, atau kerugian ekonomi bagi korban. Dengan demikian, inti dari kekerasan seksual terletak pada tidak adanya persetujuan (consent) dari korban.</div></div></div>
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Seksual</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan seksual merupakan segala bentuk perbuatan yang merendahkan, menghina, menyerang, atau tindakan lain terhadap tubuh, hasrat seksual, dan fungsi reproduksi seseorang yang dilakukan tanpa persetujuan. Tindakan ini dapat terjadi dalam berbagai bentuk, baik secara fisik maupun nonfisik, seperti pelecehan seksual, pemerkosaan, eksploitasi seksual, hingga kekerasan seksual berbasis digital. Dalam Undang-Undang Tindak Pidana Kekerasan Seksual (UU TPKS) dijelaskan bahwa kekerasan seksual tidak hanya mencakup tindakan yang bersifat langsung, tetapi juga mencakup perbuatan yang dilakukan melalui paksaan, ancaman, manipulasi, maupun penyalahgunaan kekuasaan yang mengakibatkan penderitaan fisik, psikis, seksual, atau kerugian ekonomi bagi korban. Dengan demikian, inti dari kekerasan seksual terletak pada tidak adanya persetujuan (consent) dari korban.</div></div></div>
 </div>
 <div class="modal fade" id="modalPenelantaran" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Penelantaran</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Penelantaran merupakan bentuk kekerasan yang terjadi ketika seseorang yang memiliki tanggung jawab terhadap individu lain, seperti orang tua, wali, atau pihak yang berwenang, dengan sengaja tidak memenuhi kebutuhan dasar yang seharusnya diberikan. Kebutuhan tersebut meliputi kebutuhan fisik seperti makanan, tempat tinggal, dan kesehatan, serta kebutuhan emosional dan pendidikan. Penelantaran dapat menyebabkan dampak serius, terutama pada anak, seperti gangguan pertumbuhan, keterlambatan perkembangan, hingga trauma psikologis. Dalam hukum Indonesia, penelantaran diatur dalam Undang-Undang Perlindungan Anak yang menegaskan bahwa setiap anak berhak mendapatkan perlindungan dan pemenuhan kebutuhan hidup yang layak, serta dalam Kitab Undang-Undang Hukum Pidana (KUHP) yang mengatur sanksi bagi pihak yang dengan sengaja menelantarkan orang yang berada dalam tanggung jawabnya.</div></div></div>
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Penelantaran</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Penelantaran merupakan bentuk kekerasan yang terjadi ketika seseorang yang memiliki tanggung jawab terhadap individu lain, seperti orang tua, wali, atau pihak yang berwenang, dengan sengaja tidak memenuhi kebutuhan dasar yang seharusnya diberikan. Kebutuhan tersebut meliputi kebutuhan fisik seperti makanan, tempat tinggal, dan kesehatan, serta kebutuhan emosional dan pendidikan. Penelantaran dapat menyebabkan dampak serius, terutama pada anak, seperti gangguan pertumbuhan, keterlambatan perkembangan, hingga trauma psikologis. Dalam hukum Indonesia, penelantaran diatur dalam Undang-Undang Perlindungan Anak yang menegaskan bahwa setiap anak berhak mendapatkan perlindungan dan pemenuhan kebutuhan hidup yang layak, serta dalam Kitab Undang-Undang Hukum Pidana (KUHP) yang mengatur sanksi bagi pihak yang dengan sengaja menelantarkan orang yang berada dalam tanggung jawabnya.</div></div></div>
 </div>
 
 <!-- Mengapa Harus Lapor -->
@@ -356,16 +362,16 @@
     <p class="mx-auto" style="max-width: 700px;">Dengan menyebarkan informasi atau menggunakan layanan ini, Anda ikut melindungi perempuan, anak dan orang dewasa dari kekerasan.</p>
 </section>
 
-<!-- CTA -->
-<section class="text-white py-5" style="background-color: #0f172a;">
+<!-- CTA dengan warna biru baru -->
+<section class="text-white py-5 cta-section" style="background-color: #3e74b4;">
     <div class="container text-center"><h3 class="fw-bold">Mari Kita Membuat Perbedaan dalam Kehidupan Orang Lain</h3><p class="fw-bold mb-4">Laporkan Kekerasan, Selamatkan Nyawa Semua Dimulai Dari Anda</p></div>
 </section>
 
-<!-- Footer -->
+<!-- Footer dengan warna biru baru -->
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-6"><img src="asset/logokilasan.png" alt="logo" style="max-height: 75px;"><p class="mt-3">KILASAN adalah layanan Kementerian PPPA untuk menangani kekerasan terhadap perempuan dan anak. Hotline 129, WhatsApp 0811-129-129.</p></div>
+            <div class="col-md-6"><img src="asset/logokilasan.png" alt="logo" style="max-height: 75px; filter: brightness(0) invert(1);"><p class="mt-3">KILASAN adalah layanan Kementerian PPPA untuk menangani kekerasan terhadap perempuan dan anak. Hotline 129, WhatsApp 0811-129-129.</p></div>
             <div class="col-md-3"><h5>Kontak</h5><p><i class="fas fa-phone-alt me-2"></i> 129<br><i class="fab fa-whatsapp me-2"></i> 0811-129-129<br><i class="fas fa-globe me-2"></i> <a href="form_page.html">Lapor Online</a></p></div>
             <div class="col-md-3"><h5>Tentang</h5><ul class="list-unstyled"><li><a href="#cara-lapor">Cara Lapor</a></li><li><a href="#kapan-lapor">Kapan Lapor</a></li><li><a href="#jenis-kekerasan">Jenis Kekerasan</a></li><li><a href="about.html">Tentang Kami</a></li></ul></div>
         </div>

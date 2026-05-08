@@ -74,13 +74,11 @@
             font-weight: 600;
         }
 
-        .toggle-link {
-            color: #ffd966;
-            cursor: pointer;
-            text-decoration: underline;
+        /* Hilangkan toggle registrasi */
+        .register-link-area {
+            display: none;
         }
 
-        /* Style untuk wrapper password dengan icon mata */
         .password-wrapper {
             position: relative;
         }
@@ -99,7 +97,6 @@
             color: white;
         }
 
-        /* Untuk form register juga */
         .admin-navbar {
             position: sticky;
             top: 0;
@@ -344,12 +341,58 @@
                 font-size: 1.5rem;
             }
         }
+
+        .table-filter-icon {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 0;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .table-filter-icon:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .table-filter-icon option {
+            font-size: 14px;
+        }
+
+        /* Modal bukti */
+        .bukti-thumb {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .file-link {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Perbaikan jarak modal detail */
+        .detail-modal-row {
+            margin-bottom: 0.25rem;
+        }
+        .detail-modal-label {
+            font-weight: 600;
+        }
+        /* Wrap teks kronologi */
+        .wrap-text {
+            white-space: normal !important;
+            word-break: break-word;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- LOGIN PANEL -->
+    <!-- LOGIN PANEL (tanpa registrasi) -->
     <div id="loginPanel" class="login-container">
         <div class="login-card">
             <div class="text-center mb-4">
@@ -358,7 +401,7 @@
                     KILASAN.id</div>
                 <p>Kita Lapor Kekerasan</p>
                 <hr class="w-50 mx-auto" style="background:rgba(255,255,255,0.3);">
-                <h5 id="formTitle">Selamat Datang</h5>
+                <h5>Masuk ke Panel Admin</h5>
             </div>
             <form id="loginForm">
                 <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control"
@@ -371,30 +414,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
-                <div class="form-switch-area text-center mt-3"><span class="toggle-link" id="showRegisterLink">Create
-                        Account</span></div>
-            </form>
-            <form id="registerForm" style="display:none;">
-                <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control"
-                        id="regUsername"></div>
-                <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"
-                        id="regEmail"></div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" class="form-control" id="regPassword">
-                        <i class="fas fa-eye toggle-password" data-target="regPassword"></i>
-                    </div>
-                </div>
-                <div class="mb-3"><label class="form-label">Pilih Role</label>
-                    <select id="regRole" class="form-select" style="background:rgba(255,255,255,0.2); color:white;">
-                        <option value="admin">Admin</option>
-                        <option value="superadmin">Super Admin</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary w-100 py-2">Sign Up</button>
-                <div class="text-center mt-3"><span class="toggle-link" id="showLoginLink">Sudah punya akun?
-                        Login</span></div>
+                <!-- Link registrasi dihilangkan -->
             </form>
         </div>
     </div>
@@ -493,6 +513,24 @@
         </div>
     </div>
 
+    <!-- MODAL BUKTI -->
+    <div class="modal fade" id="buktiModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title"><i class="fas fa-paperclip"></i> Bukti Pendukung</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="buktiModalBody">
+                    <p class="text-muted">Tidak ada bukti yang dilampirkan.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ======================= DATA & STORAGE HELPERS =======================
@@ -503,7 +541,7 @@
         function getFeedbacks() { return JSON.parse(localStorage.getItem('kilasan_feedbacks') || '[]'); }
         function saveFeedbacks(fb) { localStorage.setItem('kilasan_feedbacks', JSON.stringify(fb)); }
 
-        // INIT DATA DENGAN SAMPLE YANG SUDAH MENYERTAKAN RT/RW
+        // INIT DATA DENGAN SAMPLE YANG SUDAH MENYERTAKAN RT/RW + field baru (pelaku, waktuKejadian, tempatKejadian) + bukti contoh
         function initData() {
             let users = getUsers();
             if (users.length === 0) {
@@ -516,10 +554,10 @@
             let complaints = getComplaints();
             if (complaints.length === 0) {
                 const sample = [
-                    { id: "C001", tanggal: "2025-04-10", nama: "Ani", kontak: "08123456789", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara, RT 03, RW 08", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan dalam rumah tangga berulang kali", status: "Belum Diproses", jenisPelapor: "diri-sendiri" },
-                    { id: "C002", tanggal: "2025-04-12", nama: "Budi", kontak: "0822222222", wilayah: "Jakarta Selatan, Kec. Kebayoran Baru, Kel. Senayan, RT 07, RW 12", jenisKelamin: "Pria", usia: "Remaja", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Fisik", kronologi: "Dianiaya di sekolah oleh senior", status: "Sedang Diproses", jenisPelapor: "orang-lain" },
-                    { id: "C003", tanggal: "2025-04-15", nama: "Citra", kontak: "08987654321", wilayah: "Jakarta Timur, Kec. Pulo Gadung, Kel. Jati, RT 02, RW 05", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Psikis", kronologi: "Intimidasi di tempat kerja", status: "Belum Diproses", jenisPelapor: "diri-sendiri" },
-                    { id: "C004", tanggal: "2025-04-16", nama: "Dewi", kontak: "08111222333", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara, RT 04, RW 08", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan psikis", status: "Belum Diproses", jenisPelapor: "diri-sendiri" }
+                    { id: "C001", tanggal: "2025-04-10", nama: "Ani", kontak: "08123456789", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara, RT 03, RW 08", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan dalam rumah tangga berulang kali", status: "Belum Diproses", jenisPelapor: "diri-sendiri", tempatKejadian: "Rumah", pelaku: "Suami", waktuKejadian: "Malam", bukti: [] },
+                    { id: "C002", tanggal: "2025-04-12", nama: "Budi", kontak: "0822222222", wilayah: "Jakarta Selatan, Kec. Kebayoran Baru, Kel. Senayan, RT 07, RW 12", jenisKelamin: "Pria", usia: "Remaja", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Fisik", kronologi: "Dianiaya di sekolah oleh senior", status: "Sedang Diproses", jenisPelapor: "orang-lain", tempatKejadian: "Sekolah", pelaku: "Senior", waktuKejadian: "Siang", bukti: [] },
+                    { id: "C003", tanggal: "2025-04-15", nama: "Citra", kontak: "08987654321", wilayah: "Jakarta Timur, Kec. Pulo Gadung, Kel. Jati, RT 02, RW 05", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Khawatir", kategori: "Kekerasan Psikis", kronologi: "Intimidasi di tempat kerja", status: "Belum Diproses", jenisPelapor: "diri-sendiri", tempatKejadian: "Tempat Kerja", pelaku: "Atasan", waktuKejadian: "Pagi", bukti: [] },
+                    { id: "C004", tanggal: "2025-04-16", nama: "Dewi", kontak: "08111222333", wilayah: "Jakarta Barat, Kec. Kembangan, Kel. Meruya Utara, RT 04, RW 08", jenisKelamin: "Wanita", usia: "Dewasa", tingkatKhawatir: "Sangat Khawatir", kategori: "KDRT", kronologi: "Kekerasan psikis", status: "Belum Diproses", jenisPelapor: "diri-sendiri", tempatKejadian: "Rumah", pelaku: "Mertua", waktuKejadian: "Sore", bukti: [] }
                 ];
                 saveComplaints(sample);
             }
@@ -538,6 +576,8 @@
         let pengaduanPage = 1;
         let pengaduanSearch = "";
         let pengaduanStatusFilter = "";
+        let pengaduanKhawatirFilter = "";
+        let pengaduanKategoriFilter = "";
         const rowsPerPage = 10;
 
         let petugasPage = 1;
@@ -565,7 +605,21 @@
             detailDiv.style.padding = '20px';
             detailDiv.style.fontFamily = 'Inter, sans-serif';
             detailDiv.style.background = 'white';
-            detailDiv.innerHTML = `<h3 style="color:#1f5e8c;">Detail Pengaduan KILASAN.id</h3><hr><table style="width:100%; border-collapse:collapse;"><tr><td style="padding:8px; font-weight:bold;">No</td><td style="padding:8px;">${complaint.id}</td></tr><tr><td style="padding:8px; font-weight:bold;">Tanggal</td><td style="padding:8px;">${complaint.tanggal}</td></tr><tr><td style="padding:8px; font-weight:bold;">Nama Pelapor</td><td style="padding:8px;">${complaint.nama || 'Anonim'}</td></tr><tr><td style="padding:8px; font-weight:bold;">Kontak</td><td style="padding:8px;">${complaint.kontak}</td></tr><tr><td style="padding:8px; font-weight:bold;">Wilayah</td><td style="padding:8px;">${complaint.wilayah}</td></tr><tr><td style="padding:8px; font-weight:bold;">Jenis Kelamin</td><td style="padding:8px;">${complaint.jenisKelamin}</td></tr><tr><td style="padding:8px; font-weight:bold;">Usia</td><td style="padding:8px;">${complaint.usia}</td></tr><tr><td style="padding:8px; font-weight:bold;">Tingkat Kekhawatiran</td><td style="padding:8px;">${complaint.tingkatKhawatir}</td></tr><tr><td style="padding:8px; font-weight:bold;">Kategori</td><td style="padding:8px;">${complaint.kategori}</td></tr><tr><td style="padding:8px; font-weight:bold;">Kronologi</td><td style="padding:8px;">${complaint.kronologi}</td></tr><tr><td style="padding:8px; font-weight:bold;">Status</td><td style="padding:8px;">${complaint.status}</td></tr></table><p style="margin-top:20px;">Dokumen dihasilkan dari sistem KILASAN.id</p>`;
+            detailDiv.innerHTML = `<h3 style="color:#1f5e8c;">Detail Pengaduan KILASAN.id</h3><hr><table style="width:100%; border-collapse:collapse;">${[
+                ['No', complaint.id],
+                ['Tanggal', complaint.tanggal],
+                ['Nama Pelapor', complaint.nama || 'Anonim'],
+                ['Kontak', complaint.kontak],
+                ['Wilayah', complaint.wilayah],
+                ['Jenis Kelamin', complaint.jenisKelamin],
+                ['Usia', complaint.usia],
+                ['Tingkat Kekhawatiran', complaint.tingkatKhawatir],
+                ['Kategori', complaint.kategori],
+                ['Tempat Kejadian', complaint.tempatKejadian || '-'],
+                ['Waktu Kejadian', complaint.waktuKejadian || '-'],
+                ['Pelaku', complaint.pelaku || '-'],
+                ['Kronologi', complaint.kronologi]
+            ].map(([label, value]) => `<tr><td style="padding:8px; font-weight:bold;">${label}</td><td style="padding:8px; word-break:break-word;">${value}</td></tr>`).join('')}</table><p style="margin-top:20px;">Dokumen dihasilkan dari sistem KILASAN.id</p>`;
             document.body.appendChild(detailDiv);
             const opt = { margin: 0.5, filename: `Pengaduan_${complaint.id}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
             html2pdf().set(opt).from(detailDiv).save().then(() => detailDiv.remove()).catch(() => detailDiv.remove());
@@ -617,49 +671,46 @@
         function renderPengaduan(container) {
             container.innerHTML = `<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
     <h5><i class="fas fa-table"></i> Seluruh Pengaduan</h5>
-
     <div class="d-flex flex-column gap-2">
-
-    <!-- FILTER -->
-    <select id="filterStatus" 
-        class="form-select" 
-        style="border-radius:30px; max-width:250px;">
+    <select id="filterStatus" class="form-select" style="border-radius:30px; max-width:250px;">
         <option value="">Semua Status</option>
         <option value="Belum Diproses">Belum Diproses</option>
         <option value="Sedang Diproses">Sedang Diproses</option>
         <option value="Selesai">Selesai</option>
         <option value="Ditolak">Ditolak</option>
     </select>
-
-</div>
-</div><div class="search-input"><input type="text" id="searchPengaduanInput" class="form-control" placeholder="🔍 Cari nama, kontak, wilayah..." style="border-radius:30px;"></div></div><div class="table-responsive-custom" id="tabelContainerPengaduan"><table class="table table-bordered align-middle" id="tabelPengaduan"><thead class="table-light"><tr><th>No</th><th>Tgl</th><th>Pelapor</th><th>Kontak</th><th>Wilayah</th><th>JK</th><th>Usia</th><th>Kekhawatiran</th><th>Kategori</th><th>Kronologi</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbodyPengaduan"></tbody></table></div><div class="d-flex justify-content-between align-items-center mt-3 flex-wrap"><div id="pengaduanInfo" class="text-muted small"></div><nav><ul class="pagination pagination-sm" id="pengaduanPagination"></ul></nav></div>`;
+    </div>
+</div><div class="search-input"><input type="text" id="searchPengaduanInput" class="form-control" placeholder="🔍 Cari nama, kontak, wilayah..." style="border-radius:30px;"></div><div class="table-responsive-custom" id="tabelContainerPengaduan"><table class="table table-bordered align-middle" id="tabelPengaduan"><thead class="table-light">
+<tr><th>No</th><th>Tgl</th><th>Pelapor</th><th>Kontak</th>
+<th style="min-width:120px;"><div class="d-flex align-items-center gap-2"><span>Kekhawatiran</span><select id="filterKhawatirTable" class="table-filter-icon"><option value="">⇅</option><option value="Sedikit Khawatir">Sedikit Khawatir</option><option value="Khawatir">Khawatir</option><option value="Sangat Khawatir">Sangat Khawatir</option></select></div></th>
+<th style="min-width:120px;"><div class="d-flex align-items-center gap-2"><span>Kategori</span><select id="filterKategoriTable" class="table-filter-icon"><option value="">⇅</option><option value="KDRT">KDRT</option><option value="Kekerasan Fisik">Kekerasan Fisik</option><option value="Kekerasan Psikis">Kekerasan Psikis</option></select></div></th>
+<th>Status</th><th>Aksi</th><th>Bukti</th></tr>
+</thead><tbody id="tbodyPengaduan"></tbody></table></div><div class="d-flex justify-content-between align-items-center mt-3 flex-wrap"><div id="pengaduanInfo" class="text-muted small"></div><nav><ul class="pagination pagination-sm" id="pengaduanPagination"></ul></nav></div>`;
             const searchInput = document.getElementById('searchPengaduanInput');
             searchInput.value = pengaduanSearch;
             searchInput.addEventListener('input', (e) => { pengaduanSearch = e.target.value; pengaduanPage = 1; renderPengaduanTable(); });
             renderPengaduanTable();
+            setTimeout(() => {
+                const filterKhawatir = document.getElementById('filterKhawatirTable');
+                const filterKategori = document.getElementById('filterKategoriTable');
+                if (filterKhawatir) filterKhawatir.value = pengaduanKhawatirFilter;
+                if (filterKategori) filterKategori.value = pengaduanKategoriFilter;
+                filterKhawatir?.addEventListener('change', (e) => { pengaduanKhawatirFilter = e.target.value; pengaduanPage = 1; renderPengaduanTable(); });
+                filterKategori?.addEventListener('change', (e) => { pengaduanKategoriFilter = e.target.value; pengaduanPage = 1; renderPengaduanTable(); });
+            }, 50);
             const filterSelect = document.getElementById('filterStatus');
             filterSelect.value = pengaduanStatusFilter;
-
-            filterSelect.addEventListener('change', (e) => {
-                pengaduanStatusFilter = e.target.value;
-                pengaduanPage = 1;
-                renderPengaduanTable();
-            });
+            filterSelect.addEventListener('change', (e) => { pengaduanStatusFilter = e.target.value; pengaduanPage = 1; renderPengaduanTable(); });
         }
 
         function renderPengaduanTable() {
             const complaints = getComplaints();
             const filtered = complaints.filter(c => {
-                const matchSearch =
-                    c.nama?.toLowerCase().includes(pengaduanSearch.toLowerCase()) ||
-                    c.kontak?.includes(pengaduanSearch) ||
-                    c.wilayah?.toLowerCase().includes(pengaduanSearch.toLowerCase()) ||
-                    c.kronologi?.toLowerCase().includes(pengaduanSearch.toLowerCase());
-
-                const matchStatus =
-                    !pengaduanStatusFilter || c.status === pengaduanStatusFilter;
-
-                return matchSearch && matchStatus;
+                const matchSearch = c.nama?.toLowerCase().includes(pengaduanSearch.toLowerCase()) || c.kontak?.includes(pengaduanSearch) || c.wilayah?.toLowerCase().includes(pengaduanSearch.toLowerCase()) || c.kronologi?.toLowerCase().includes(pengaduanSearch.toLowerCase());
+                const matchStatus = !pengaduanStatusFilter || c.status === pengaduanStatusFilter;
+                const matchKhawatir = !pengaduanKhawatirFilter || c.tingkatKhawatir === pengaduanKhawatirFilter;
+                const matchKategori = !pengaduanKategoriFilter || c.kategori === pengaduanKategoriFilter;
+                return matchSearch && matchStatus && matchKhawatir && matchKategori;
             });
             const total = filtered.length;
             const totalPages = Math.ceil(total / rowsPerPage);
@@ -668,17 +719,20 @@
             const pageData = filtered.slice(start, start + rowsPerPage);
             const tbody = document.getElementById('tbodyPengaduan');
             if (!tbody) return;
-            tbody.innerHTML = pageData.map((c, idx) => `<tr><td class="align-middle">${start + idx + 1}</td><td class="align-middle">${c.tanggal}</td><td class="align-middle">${c.nama || 'Anonim'}</td><td class="align-middle">${c.kontak}</td><td class="align-middle">${c.wilayah}</td><td class="align-middle">${c.jenisKelamin}</td><td class="align-middle">${c.usia}</td><td class="align-middle">${c.tingkatKhawatir}</td><td class="align-middle">${c.kategori || '-'}</td><td class="align-middle">${c.kronologi.substring(0, 40)}...</td>
-<td class="align-middle">
-    <select class="form-select form-select-sm status-select" data-id="${c.id}">
-        <option ${c.status === 'Belum Diproses' ? 'selected' : ''}>Belum Diproses</option>
-        <option ${c.status === 'Sedang Diproses' ? 'selected' : ''}>Sedang Diproses</option>
-        <option ${c.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
-        <option ${c.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
-    </select>
-</td><td class="align-middle"><button class="btn btn-sm btn-outline-primary detail-btn" data-id="${c.id}">Detail</button></td></tr>`).join('');
+            tbody.innerHTML = pageData.map((c, idx) => `
+<tr><td class="align-middle">${start + idx + 1}</td>
+<td class="align-middle">${c.tanggal}</td>
+<td class="align-middle">${c.nama || 'Anonim'}</td>
+<td class="align-middle">${c.kontak}</td>
+<td class="align-middle">${c.tingkatKhawatir}</td>
+<td class="align-middle">${c.kategori || '-'}</td>
+<td class="align-middle"><select class="form-select form-select-sm status-select" data-id="${c.id}"><option value="Belum Diproses" ${c.status === 'Belum Diproses' ? 'selected' : ''}>Belum Diproses</option><option value="Sedang Diproses" ${c.status === 'Sedang Diproses' ? 'selected' : ''}>Sedang Diproses</option><option value="Selesai" ${c.status === 'Selesai' ? 'selected' : ''}>Selesai</option><option value="Ditolak" ${c.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option></select></td>
+<td class="align-middle"><button class="btn btn-sm btn-outline-primary detail-btn" data-id="${c.id}">Detail</button></td>
+<td class="align-middle"><button class="btn btn-sm btn-outline-primary bukti-btn" data-id="${c.id}"><i class="fas fa-image"></i> Bukti</button></td>
+`).join('');
             document.querySelectorAll('.status-select').forEach(sel => { sel.removeEventListener('change', handleStatusChange); sel.addEventListener('change', handleStatusChange); });
             document.querySelectorAll('.detail-btn').forEach(btn => { btn.removeEventListener('click', handleDetailClick); btn.addEventListener('click', handleDetailClick); });
+            document.querySelectorAll('.bukti-btn').forEach(btn => { btn.removeEventListener('click', handleBuktiClick); btn.addEventListener('click', handleBuktiClick); });
             const startNum = total === 0 ? 0 : start + 1;
             const endNum = Math.min(start + rowsPerPage, total);
             document.getElementById('pengaduanInfo').innerText = `Menampilkan ${startNum} - ${endNum} dari ${total} data`;
@@ -722,10 +776,54 @@
             if (comp) {
                 currentDetailComplaint = comp;
                 const modalBody = document.getElementById('detailModalBody');
-                modalBody.innerHTML = `<div class="row"><div class="col-6"><strong>ID:</strong> ${comp.id}</div><div class="col-6"><strong>Tanggal:</strong> ${comp.tanggal}</div><div class="col-12 mt-2"><strong>Nama Pelapor:</strong> ${comp.nama || 'Anonim'}</div><div class="col-6"><strong>Kontak:</strong> ${comp.kontak}</div><div class="col-6"><strong>Wilayah:</strong> ${comp.wilayah}</div><div class="col-6"><strong>Jenis Kelamin:</strong> ${comp.jenisKelamin}</div><div class="col-6"><strong>Usia:</strong> ${comp.usia}</div><div class="col-6"><strong>Tingkat Kekhawatiran:</strong> ${comp.tingkatKhawatir}</div><div class="col-6"><strong>Kategori:</strong> ${comp.kategori}</div><div class="col-12 mt-2"><strong>Kronologi:</strong> ${comp.kronologi}</div><div class="col-12 mt-2"><strong>Status:</strong> <span class="badge bg-secondary">${comp.status}</span></div></div>`;
+                // Urutan sesuai permintaan: ID, Nama Pelapor, Kontak, Wilayah, Jenis Kelamin, Usia, Tingkat Kekhawatiran, Kategori, Tempat Kejadian, Waktu Kejadian, Pelaku, Kronologi
+                // Tanggal tetap di samping ID (baris pertama 2 kolom)
+                modalBody.innerHTML = `
+                <div class="container-fluid p-0">
+                    <div class="row g-1">
+                        <div class="col-md-6"><strong>ID:</strong> ${comp.id}</div>
+                        <div class="col-md-6"><strong>Tanggal:</strong> ${comp.tanggal}</div>
+                        <div class="col-12 mt-1"><strong>Nama Pelapor:</strong> ${comp.nama || 'Anonim'}</div>
+                        <div class="col-md-6"><strong>Kontak:</strong> ${comp.kontak}</div>
+                        <div class="col-12"><strong>Wilayah:</strong> ${comp.wilayah}</div>
+                        <div class="col-md-6"><strong>Jenis Kelamin:</strong> ${comp.jenisKelamin}</div>
+                        <div class="col-md-6"><strong>Usia:</strong> ${comp.usia}</div>
+                        <div class="col-md-6"><strong>Tingkat Kekhawatiran:</strong> ${comp.tingkatKhawatir}</div>
+                        <div class="col-md-6"><strong>Kategori:</strong> ${comp.kategori}</div>
+                        <div class="col-md-6"><strong>Tempat Kejadian:</strong> ${comp.tempatKejadian || '-'}</div>
+                        <div class="col-md-6"><strong>Waktu Kejadian:</strong> ${comp.waktuKejadian || '-'}</div>
+                        <div class="col-md-6"><strong>Pelaku:</strong> ${comp.pelaku || '-'}</div>
+                        <div class="col-12"><strong>Kronologi:</strong> <span class="wrap-text">${comp.kronologi}</span></div>
+                    </div>
+                </div>`;
                 const modal = new bootstrap.Modal(document.getElementById('detailComplaintModal'));
                 modal.show();
             }
+        }
+
+        // Fungsi untuk menampilkan bukti
+        function handleBuktiClick(e) {
+            const id = e.target.closest('.bukti-btn').dataset.id;
+            const comp = getComplaints().find(c => c.id === id);
+            const buktiList = comp && comp.bukti ? comp.bukti : [];
+            const modalBody = document.getElementById('buktiModalBody');
+            if (!buktiList.length) {
+                modalBody.innerHTML = '<p class="text-muted">Tidak ada bukti yang dilampirkan untuk pengaduan ini.</p>';
+            } else {
+                let html = '<div class="row">';
+                buktiList.forEach((item, idx) => {
+                    const isImage = item.type && item.type.startsWith('image/');
+                    if (isImage) {
+                        html += `<div class="col-md-6 mb-3"><div class="card"><img src="${item.data}" class="card-img-top bukti-thumb" alt="Bukti ${idx+1}"><div class="card-body"><a href="${item.data}" download="bukti_${comp.id}_${idx+1}" class="btn btn-sm btn-primary">Unduh</a></div></div></div>`;
+                    } else {
+                        html += `<div class="col-md-6 mb-3"><div class="card"><div class="card-body"><p>File: ${item.name || 'Lampiran'}</p><a href="${item.data}" download="${item.name || 'lampiran'}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> Unduh</a></div></div></div>`;
+                    }
+                });
+                html += '</div>';
+                modalBody.innerHTML = html;
+            }
+            const modal = new bootstrap.Modal(document.getElementById('buktiModal'));
+            modal.show();
         }
 
         document.getElementById('modalDeleteComplaintBtn')?.addEventListener('click', () => {
@@ -802,7 +900,7 @@
 
         function renderFeedback(container) {
             let feedbacks = getFeedbacks();
-            container.innerHTML = `<h5><i class="fas fa-comment-dots"></i> Feedback Pengguna</h5><div class="table-responsive-custom"><table class="table table-bordered"><thead><tr><th>Nama</th><th>Email</th><th>Pesan</th><th>Tanggal</th></tr></thead><tbody>${feedbacks.map(f => `<tr><td>${f.name}</td><td>${f.email}</td><td>${f.message}</td><td>${new Date(f.date).toLocaleString()}</td></tr>`).join('')}</tbody>}</table></div>`;
+            container.innerHTML = `<h5><i class="fas fa-comment-dots"></i> Feedback Pengguna</h5><div class="table-responsive-custom"><table class="table table-bordered"><thead><tr><th>Nama</th><th>Email</th><th>Pesan</th><th>Tanggal</th></tr></thead><tbody>${feedbacks.map(f => `<tr><td>${f.name}</td><td>${f.email}</td><td>${f.message}</td><td>${new Date(f.date).toLocaleString()}</td></tr>`).join('')}</tbody></table></div>`;
         }
 
         function updateMenuByRole() {
@@ -820,21 +918,17 @@
         function handleMenuClick(e) { e.preventDefault(); const page = this.dataset.page; if (page) renderPage(page); document.querySelectorAll('#navMenuList .nav-link-custom').forEach(l => l.classList.remove('active-nav')); this.classList.add('active-nav'); if (window.innerWidth < 992) closeSidebar(); }
 
         function handleLogin(e) { e.preventDefault(); const username = document.getElementById('loginUsername').value.trim(); const pwd = document.getElementById('loginPassword').value.trim(); const users = getUsers(); const user = users.find(u => u.username === username && u.password === pwd); if (user) { currentUser = user; currentRole = user.role; user.lastLogin = new Date().toISOString(); saveUsers(users); document.getElementById('loginPanel').style.display = 'none'; document.getElementById('dashboardApp').style.display = 'block'; document.getElementById('sidebarUsername').innerText = user.username; updateMenuByRole(); } else alert('Username atau password salah!'); }
-        function handleRegister(e) { e.preventDefault(); const username = document.getElementById('regUsername').value.trim(); const email = document.getElementById('regEmail').value.trim(); const password = document.getElementById('regPassword').value.trim(); const role = document.getElementById('regRole').value; if (!username || !email || !password) { alert("Lengkapi semua data"); return; } let users = getUsers(); if (users.find(u => u.username === username)) { alert("Username sudah ada"); return; } users.push({ username, password, email, role, avatar: "", lastLogin: null }); saveUsers(users); alert("Registrasi berhasil, silakan login."); toggleToLogin(); }
         function logout() { currentUser = null; document.getElementById('loginPanel').style.display = 'flex'; document.getElementById('dashboardApp').style.display = 'none'; if (window.innerWidth < 992) closeSidebar(); }
-        function toggleToRegister() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; document.getElementById('formTitle').innerText = 'Buat Akun'; }
-        function toggleToLogin() { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; document.getElementById('formTitle').innerText = 'Selamat Datang'; }
 
         // Sidebar toggle responsif
         const sidebar = document.getElementById('mainSidebar');
         const overlay = document.getElementById('sidebarOverlay');
-        function openSidebar() { if (window.innerWidth < 992) { sidebar.classList.add('show'); overlay.classList.add('active'); } else { sidebar.classList.toggle('sidebar-closed'); } }
         function closeSidebar() { if (window.innerWidth < 992) { sidebar.classList.remove('show'); overlay.classList.remove('active'); } else { sidebar.classList.remove('sidebar-closed'); } }
         document.getElementById('toggleSidebarBtn').addEventListener('click', (e) => { if (window.innerWidth < 992) { sidebar.classList.toggle('show'); overlay.classList.toggle('active'); } else { sidebar.classList.toggle('sidebar-closed'); } });
         overlay.addEventListener('click', closeSidebar);
         window.addEventListener('resize', function () { if (window.innerWidth >= 992) { sidebar.classList.remove('show'); overlay.classList.remove('active'); } });
 
-        // ======================= FITUR SHOW/HIDE PASSWORD =======================
+        // Show/hide password
         document.querySelectorAll('.toggle-password').forEach(icon => {
             icon.addEventListener('click', function () {
                 const targetId = this.getAttribute('data-target');
@@ -848,13 +942,9 @@
         });
 
         document.getElementById('loginForm').addEventListener('submit', handleLogin);
-        document.getElementById('registerForm').addEventListener('submit', handleRegister);
-        document.getElementById('showRegisterLink').addEventListener('click', toggleToRegister);
-        document.getElementById('showLoginLink').addEventListener('click', toggleToLogin);
         document.getElementById('realLogoutBtn').addEventListener('click', (e) => { e.preventDefault(); logout(); });
         document.getElementById('saveProfileBtn')?.addEventListener('click', () => { let newUsername = document.getElementById('profileUsername').value; let newEmail = document.getElementById('profileEmail').value; let newPass = document.getElementById('profilePassword').value; let users = getUsers(); let idx = users.findIndex(u => u.username === currentUser.username); if (idx !== -1) { if (newUsername !== currentUser.username && users.find(u => u.username === newUsername)) alert("Username sudah dipakai"); else { users[idx].username = newUsername; users[idx].email = newEmail; if (newPass) users[idx].password = newPass; saveUsers(users); currentUser = users[idx]; document.getElementById('sidebarUsername').innerText = currentUser.username; alert("Profil diperbarui"); } } bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide(); });
         document.getElementById('navAvatarBtn')?.addEventListener('click', () => { document.getElementById('profileUsername').value = currentUser.username; document.getElementById('profileEmail').value = currentUser.email || ''; document.getElementById('profilePassword').value = ''; });
-
     </script>
 </body>
 
