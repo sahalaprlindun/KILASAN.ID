@@ -38,9 +38,10 @@
             font-weight: 800;
             margin-top: 0.5rem;
         }
+        /* ===== TOMOL UTAMA & BUTTON ===== sesuai dengan index.html (gradien aksen hijau-biru) */
         .thm-btn {
             display: inline-block;
-            background-color: #dc3545;
+            background-color: #28A47B;
             color: white;
             padding: 12px 30px;
             border-radius: 40px;
@@ -48,24 +49,43 @@
             text-decoration: none;
             transition: 0.3s;
             border: none;
+            box-shadow: 0 4px 12px rgba(0,91,159,0.2);
         }
         .thm-btn:hover {
-            background-color: #b02a37;
+            background-color: #1F8A67;
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,91,159,0.3);
+        }
+        /* Tombol LAPOR di navbar */
+        .btn-danger, .btn-danger:focus {
+            background-color: #28A47B !important;
+            border-color: #28A47B !important;
+            box-shadow: none;
+        }
+        .btn-danger:hover {
+            background-color: #1F8A67 !important;
+            border-color: #1F8A67 !important;
+            transform: translateY(-1px);
         }
         .main-header {
             background: #fff;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
         .navbar-brand img {
-            max-height: 50px;
+            max-height: 80px;
         }
         .nav-link {
             font-weight: 500;
             color: #1f2a3e;
         }
+        .navbar-nav .nav-link:hover {
+            color: #1f2a3e !important;
+            text-decoration: none;
+        }
+        /* HERO dengan gradien biru + hijau seperti index.html */
         .page-hero {
-            background: linear-gradient(135deg, #1e2a47 0%, #0f172a 100%);
+            background: linear-gradient(115deg, #005B9F 0%, #28A47B 100%);
             color: white;
             padding: 80px 0;
         }
@@ -74,9 +94,11 @@
             font-weight: 800;
         }
         .page-hero .subhead {
-            font-size: 1.2rem;
-            color: #dc3545;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: #FFD166;
             font-weight: 600;
+            margin-bottom: 0.25rem;
         }
         .card-hover {
             transition: 0.3s;
@@ -85,9 +107,10 @@
         }
         .card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,91,159,0.15);
+            border-bottom: 2px solid #28A47B;
         }
-        /* Agar tinggi card seragam dan rapi */
+        /* Team card styling */
         .team-card {
             display: flex;
             flex-direction: column;
@@ -112,25 +135,39 @@
             object-fit: cover;
             display: block;
         }
-        /* Pastikan setiap card memiliki tinggi minimal yang sama, 
-           dan teks deskripsi tidak membuat card melar terlalu jauh */
         .team-card .small {
             font-size: 0.85rem;
             line-height: 1.4;
             margin-top: 0.5rem;
         }
+        /* FOOTER - GRADIEN SAMA SEPERTI HERO & INDEX */
         .footer {
-            background: #0f172a;
-            color: #adb7c9;
+            background: linear-gradient(115deg, #005B9F 0%, #28A47B 100%);
+            color: #f0f9ff;
             padding: 40px 0 20px;
         }
         .footer a {
-            color: #adb7c9;
+            color: #ffffff;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
         .footer a:hover {
-            color: white;
+            color: #C8FFE0 !important;
+            text-decoration: underline;
         }
+        .footer .text-center, .footer p, .footer h5 {
+            color: #ffffff;
+        }
+        .footer hr {
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* link hover umum (non-footer) bisa pakai aksen hijau */
+        a:not(.nav-link):hover {
+            color: #28A47B !important;
+            transition: 0.2s;
+        }
+
         .floating-btn {
             position: fixed;
             bottom: 20px;
@@ -149,7 +186,12 @@
         }
         .floating-btn:hover {
             transform: scale(1.05);
+            background: #005B9F;
         }
+        .floating-btn:hover i {
+            color: white !important;
+        }
+
         @media (max-width: 768px) {
             .page-hero h1 { font-size: 2rem; }
             .team-photo { width: 100px; height: 100px; }
@@ -161,7 +203,7 @@
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header (navbar mirip index, dengan warna tombol lapor hijau) -->
 <header class="main-header">
     <nav class="navbar navbar-expand-lg bg-white py-3">
         <div class="container">
@@ -173,9 +215,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="landing_page.html#cara-lapor">Cara Lapor</a></li>
-                    <li class="nav-item"><a class="nav-link" href="landing_page.html#kapan-lapor">Kapan Harus Lapor</a></li>
-                    <li class="nav-item"><a class="nav-link" href="landing_page.html#mengapa-lapor">Mengapa Harus Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#cara-lapor">Cara Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#kapan-lapor">Kapan Harus Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#mengapa">Mengapa Harus Lapor</a></li>
                     <li class="nav-item ms-auto me-3">
                         <a href="form_page.html" class="btn btn-danger rounded-square px-3 py-1">LAPOR</a>
                     </li>
@@ -185,14 +227,14 @@
     </nav>
 </header>
 
-<!-- Page Hero -->
+<!-- Page Hero dengan gradien warna biru → hijau (sama seperti index) -->
 <section class="page-hero">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
                 <p class="subhead">#BeraniBicara</p>
-                <h1>Tentang <span class="text-danger">KILASAN</span></h1>
-                <p class="mt-3">Kami bukan sekadar platform — kami adalah gerakan yang mendokumentasikan dan memutus rantai kekerasan terhadap anak perempuan dan orang dewasa. Suara yang aman adalah suara yang dapat mengubah dunia.</p>
+                <h1 style="margin-top: 0; margin-bottom: 0.5rem;">Tentang <span style="color: #F8F9FA;">KILASAN</span></h1>
+                <p class="mt-3" style="color: #F8F9FA; margin-top: 0.5rem !important;">KILASAN hadir bukan hanya sebagai platform pengaduan, tetapi juga sebagai gerakan kepedulian untuk membantu melindungi perempuan, anak-anak, dan masyarakat dari berbagai bentuk kekerasan. Kami berkomitmen menyediakan ruang pelaporan yang aman, terpercaya, dan mudah diakses agar setiap suara dapat didengar, ditindaklanjuti, dan menjadi langkah nyata dalam menciptakan lingkungan yang lebih aman bagi semua.</p>
             </div>
             <div class="col-lg-4 d-none d-lg-block text-center">
             </div>
@@ -200,39 +242,21 @@
     </div>
 </section>
 
-<!-- Kenapa KILASAN + Statistik -->
+<!-- Kenapa KILASAN (penjelasan) -->
 <section class="container py-5">
     <div class="row g-5 align-items-center">
-        <div class="col-lg-7">
+        <div class="col-lg-12">
             <h2 class="fw-bold mb-4">Kenapa KILASAN?</h2>
-            <p><strong>KILASAN</strong> adalah jawaban atas sunyi yang dipaksakan. Setiap laporan yang masuk adalah sebuah metafora perlawanan — sebuah <span class="text-danger fw-bold">kiasan</span> bahwa diam bukan lagi pilihan.</p>
-            <p>Kami menggabungkan teknologi enkripsi mutakhir dengan jaringan pendamping psikolog dan advokat. Semua laporan bersifat anonim, tetapi dampaknya nyata dan terukur.</p>
-        </div>
-        <div class="col-lg-5">
-            <div class="card card-hover p-4">
-                <h3 class="fw-bold mb-4">Mulai Bersama Kami</h3>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="fw-bold fs-4 text-danger">0+</span>
-                    <span>Laporan Diterima</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="fw-bold fs-4 text-danger">1</span>
-                    <span>Mitra Shelter</span>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span class="fw-bold fs-4 text-danger">100%</span>
-                    <span>Anonim Terjamin</span>
-                </div>
-            </div>
+            <p><strong>KILASAN</strong> hadir bukan hanya sebagai platform pengaduan, tetapi juga sebagai gerakan kepedulian untuk membantu melindungi perempuan, anak-anak, dan masyarakat dari berbagai bentuk kekerasan. <span class="text-danger fw-bold">KILASAN</span> berkomitmen menyediakan ruang pelaporan yang aman, terpercaya, dan mudah diakses agar setiap suara dapat didengar, ditindaklanjuti, dan menjadi langkah nyata dalam menciptakan lingkungan yang lebih aman bagi semua.</p>
         </div>
     </div>
 </section>
 
-<!-- Tim - menggunakan h-100 dan flex agar semua card rapi dan sejajar -->
+<!-- Tim - semua card rapi, konsisten dengan aksen hover hijau -->
 <section class="bg-light py-5">
     <div class="container text-center">
-        <h2 class="fw-bold mb-3">Wajah di Balik KILASAN</h2>
-        <p class="mb-5">Kami di sini memutus rantai kekerasan.</p>
+        <h2 class="fw-bold mb-3">KILASAN Development Team</h2>
+        <p class="mb-5">Kami hadir untuk membangun ruang aman, mendukung perlindungan masyarakat, dan bersama memutus rantai kekerasan melalui teknologi dan kepedulian.</p>
         <div class="row g-4 justify-content-center">
             <!-- Member 1 -->
             <div class="col-md-6 col-lg-2 d-flex align-items-stretch">
@@ -242,8 +266,8 @@
                     </div>
                     <div class="card-body p-0 pt-2 d-flex flex-column">
                         <h5 class="fw-bold mt-2">Hadi Santoso</h5>
-                        <span class="text-danger fw-bold">Founder</span>
-                        <p class="small mt-2">Aktivis perempuan yang memastikan platform tetap tajam dan fokus.</p>
+                        <span class="text-danger fw-bold">Leader</span>
+                        <p class="small mt-2">Memimpin pengembangan KILASAN dengan memastikan platform tetap terarah, responsif, dan berfokus pada perlindungan serta keamanan masyarakat.</p>
                     </div>
                 </div>
             </div>
@@ -255,8 +279,8 @@
                     </div>
                     <div class="card-body p-0 pt-2 d-flex flex-column">
                         <h5 class="fw-bold mt-2">Fadel Atallah Priyatna</h5>
-                        <span class="text-danger fw-bold">Program Lead</span>
-                        <p class="small mt-2">Mengawal alur laporan hingga tertangani tanpa hambatan.</p>
+                        <span class="text-danger fw-bold">Website Developer</span>
+                        <p class="small mt-2">Bertanggung jawab dalam proses pengembangan website KILASAN bersama tim, mulai dari perancangan tampilan, pembangunan sistem, hingga memastikan platform berjalan dengan baik dan responsif.</p>
                     </div>
                 </div>
             </div>
@@ -268,8 +292,8 @@
                     </div>
                     <div class="card-body p-0 pt-2 d-flex flex-column">
                         <h5 class="fw-bold mt-2">Sahala Parlindungan</h5>
-                        <span class="text-danger fw-bold">Psikolog</span>
-                        <p class="small mt-2">Merancang pendampingan trauma yang aman dan restoratif.</p>
+                        <span class="text-danger fw-bold">Widget Mobile</span>
+                        <p class="small mt-2">Bertanggung jawab dalam pengembangan dan integrasi fitur mobile pada platform KILASAN agar layanan dapat diakses dengan nyaman, responsif, dan optimal di berbagai perangkat pengguna.</p>
                     </div>
                 </div>
             </div>
@@ -281,8 +305,8 @@
                     </div>
                     <div class="card-body p-0 pt-2 d-flex flex-column">
                         <h5 class="fw-bold mt-2">Stefanie Keyshya Ardadi</h5>
-                        <span class="text-danger fw-bold">Tech Lead</span>
-                        <p class="small mt-2">Menjaga keamanan data dengan enkripsi zero-knowledge.</p>
+                        <span class="text-danger fw-bold">Website Developer</span>
+                        <p class="small mt-2">Bertanggung jawab dalam proses pengembangan website KILASAN bersama tim, mulai dari perancangan tampilan, pembangunan sistem, hingga memastikan platform berjalan dengan baik dan responsif.</p>
                     </div>
                 </div>
             </div>
@@ -294,8 +318,8 @@
                     </div>
                     <div class="card-body p-0 pt-2 d-flex flex-column">
                         <h5 class="fw-bold mt-2">Aurisa Rabina Komariah</h5>
-                        <span class="text-danger fw-bold">Advokat</span>
-                        <p class="small mt-2">Memastikan setiap laporan punya saluran hukum yang berpihak korban.</p>
+                        <span class="text-danger fw-bold">Website Developer</span>
+                        <p class="small mt-2">Bertanggung jawab dalam proses pengembangan website KILASAN bersama tim, mulai dari perancangan tampilan, pembangunan sistem, hingga memastikan platform berjalan dengan baik dan responsif.</p>
                     </div>
                 </div>
             </div>
@@ -303,25 +327,28 @@
     </div>
 </section>
 
-<!-- Footer -->
+<!-- Footer dengan gradien biru + hijau (sama seperti index.html) -->
 <footer class="footer">
     <div class="container">
-        <div class="row">
+        <div class="row align-items-start">
+            <!-- Kolom pertama: logo dan deskripsi -->
             <div class="col-md-6">
-                <img src="asset/logokilasan.png" alt="logo" style="max-height: 75px;">
-                <p class="mt-3">KILASAN adalah layanan Kementerian PPPA untuk menangani kekerasan terhadap perempuan dan anak. Hotline 129, WhatsApp 0811-129-129.</p>
+                <img src="asset/logokilasan.png" alt="logo" style="max-height: 75px; filter: brightness(0) invert(1);">
+                <p class="mt-3">KILASAN merupakan platform pengaduan dan layanan informasi yang hadir untuk membantu masyarakat dalam melaporkan serta menangani berbagai bentuk kekerasan secara aman, cepat, dan terpercaya demi menciptakan lingkungan yang lebih peduli dan terlindungi.</p>
             </div>
+            <!-- Kolom kedua: Kontak -->
             <div class="col-md-3">
                 <h5>Kontak</h5>
                 <p><i class="fas fa-phone-alt me-2"></i> 129<br>
                 <i class="fab fa-whatsapp me-2"></i> 0811-129-129<br>
                 <i class="fas fa-globe me-2"></i> <a href="form_page.html">Lapor Online</a></p>
             </div>
+            <!-- Kolom ketiga: Tentang -->
             <div class="col-md-3">
                 <h5>Tentang</h5>
                 <ul class="list-unstyled">
-                    <li><a href="landing_page.html#cara-lapor">Cara Lapor</a></li>
-                    <li><a href="landing_page.html#kapan-lapor">Kapan Lapor</a></li>
+                    <li><a href="index.html#cara-lapor">Cara Lapor</a></li>
+                    <li><a href="index.html#kapan-lapor">Kapan Lapor</a></li>
                     <li><a href="about.html">Tentang Kami</a></li>
                 </ul>
             </div>
@@ -331,7 +358,6 @@
     </div>
 </footer>
 
-<!-- Floating button WhatsApp Darurat -->
-<div class="floating-btn" onclick="window.open('https://wa.me/628111129129?text=Halo,%20saya%20membutuhkan%20bantuan%20DARURAT%20terkait%20kekerasan.', '_blank')">
-    <i class="fab fa-whatsapp fa-3x" style="color: #25D366;"></i>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

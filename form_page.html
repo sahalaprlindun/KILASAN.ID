@@ -25,16 +25,43 @@
         .navbar-brand img { max-height: 80px; }
         .nav-link { font-weight: 500; color: #1f2a3e; }
         
-        /* Footer warna biru baru #3e74b4 */
+        /* Footer - perpaduan biru + hijau (sama seperti halaman utama) */
         .footer {
             flex-shrink: 0;
-            background: #3e74b4;
-            color: #f0f4fa;
+            background: linear-gradient(115deg, #005B9F 0%, #28A47B 100%);
+            color: #f0f9ff;
             padding: 40px 0 20px;
         }
-        .footer a { color: #f0f4fa; text-decoration: none; }
-        .footer a:hover { color: white; }
+        .footer a { 
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover { 
+            color: #C8FFE0 !important;
+            text-decoration: underline;
+        }
+        .footer .text-center, .footer p, .footer h5 {
+            color: #ffffff;
+        }
+        .footer hr {
+            border-color: rgba(255,255,255,0.3);
+        }
         
+        /* Tombol utama (Kirim Laporan, dll) diubah ke hijau */
+        .btn-danger, .btn-danger:focus, .btn-danger:active {
+            background-color: #28A47B !important;
+            border-color: #28A47B !important;
+            box-shadow: none;
+            transition: all 0.25s;
+        }
+        .btn-danger:hover {
+            background-color: #1F8A67 !important;
+            border-color: #1F8A67 !important;
+            transform: translateY(-1px);
+        }
+        
+        /* Kartu pilihan (Darurat, Tidak) - tidak mengubah warna latar utama, tapi hover dan tombol */
         .choice-card {
             border: 2px solid #dee2e6;
             border-radius: 16px;
@@ -44,7 +71,11 @@
             text-align: center;
             background: white;
         }
-        .choice-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .choice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(40, 164, 123, 0.15);
+            border-color: #28A47B;
+        }
         .choice-card.danger { background: #dc3545; color: white; border-color: #dc3545; }
         .choice-card.normal { background: #f8f9fa; }
         .choice-card.self { background: #e8f5e9; }
@@ -52,16 +83,25 @@
         .choice-icon { font-size: 3rem; margin-bottom: 1rem; }
         .choice-title { font-size: 1.5rem; font-weight: 700; }
         .choice-desc { font-weight: 500; }
+        
+        /* Hover pada link umum (bukan navbar) */
+        a:not(.nav-link):hover {
+            color: #28A47B !important;
+            transition: 0.2s;
+        }
+        
+        /* Form control focus border sesuai tema hijau */
+        .form-control:focus, .form-select:focus {
+            border-color: #28A47B;
+            box-shadow: 0 0 0 0.2rem rgba(40, 164, 123, 0.25);
+        }
+        
         #report-type-choice, #form-pengaduan { display: none; }
         .form-control, .form-select {
             border: 2px solid #dee2e6;
             border-radius: 8px;
             padding: 0.75rem;
             font-family: 'Rubik', sans-serif;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.25);
         }
         .g-recaptcha { margin-bottom: 1rem; }
         .data-lokasi-box {
@@ -109,29 +149,29 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* style untuk opsi lainnya */
         .extra-input {
             margin-top: 10px;
         }
+        /* Minimal change untuk menjaga tampilan tetap sama, hanya warna interaksi */
     </style>
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header (navbar tidak diubah) -->
 <header class="main-header">
     <nav class="navbar navbar-expand-lg bg-white py-3">
         <div class="container">
-            <a class="navbar-brand" href="landing_page.html">
-                <img src="asset/logokilasan.png" alt="Logo" style="max-height: 80px;">
+            <a class="navbar-brand" href="index.html">
+                <img src="asset/newlogo.png" alt="Logo" style="max-height: 80px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="landing_page.html#cara-lapor">Cara Lapor</a></li>
-                    <li class="nav-item"><a class="nav-link" href="landing_page.html#kapan-lapor">Kapan Harus Lapor</a></li>
-                    <li class="nav-item"><a class="nav-link" href="landing_page.html#mengapa-lapor">Mengapa Harus Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#cara-lapor">Cara Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#kapan-lapor">Kapan Harus Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#mengapa">Mengapa Harus Lapor</a></li>
                     <li class="nav-item"><a class="nav-link active" href="about.html">Tentang Kami</a></li>
                 </ul>
             </div>
@@ -178,32 +218,31 @@
                         <div class="card h-100 border-0 shadow-sm p-3">
                             <i class="fas fa-heart-broken fa-2x text-danger mb-3"></i>
                             <h5>Kekerasan Fisik</h5>
-                            <p class="text-muted small">Tindakan yang menyebabkan rasa sakit, cedera, atau luka fisik. Contoh: memukul, menampar, mendorong, melukai dengan benda.</p>
+                            <p class="text-muted small">Tindakan yang menyebabkan rasa sakit, cedera, luka, atau membahayakan kondisi tubuh korban, seperti memukul, menendang, menampar, mendorong, maupun melukai menggunakan benda tertentu.</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
                         <div class="card h-100 border-0 shadow-sm p-3">
                             <i class="fas fa-comment-slash fa-2x text-danger mb-3"></i>
                             <h5>Kekerasan Psikis</h5>
-                            <p class="text-muted small">Perkataan atau perbuatan yang merendahkan, menghina, mengintimidasi, atau mengisolasi korban secara mental.</p>
+                            <p class="text-muted small">Tindakan berupa ucapan atau perilaku yang menimbulkan tekanan mental, ketakutan, rasa rendah diri, atau trauma emosional melalui hinaan, ancaman, intimidasi, maupun pengucilan terhadap korban.</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
                         <div class="card h-100 border-0 shadow-sm p-3">
                             <i class="fas fa-lock fa-2x text-danger mb-3"></i>
                             <h5>Kekerasan Seksual</h5>
-                            <p class="text-muted small">Paksaan atau tindakan yang melanggar martabat seksual, termasuk pelecehan, pemaksaan hubungan intim, atau eksploitasi.</p>
+                            <p class="text-muted small">Segala bentuk tindakan, pelecehan, pemaksaan, atau ancaman yang berkaitan dengan aktivitas seksual dan dilakukan tanpa persetujuan, sehingga merugikan serta melanggar hak, martabat, dan keamanan korban.</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
                         <div class="card h-100 border-0 shadow-sm p-3">
                             <i class="fas fa-home fa-2x text-danger mb-3"></i>
                             <h5>KDRT</h5>
-                            <p class="text-muted small">Kekerasan yang terjadi dalam lingkup rumah tangga, baik terhadap pasangan, anak, atau anggota keluarga lainnya.</p>
+                            <p class="text-muted small">Kekerasan dalam rumah tangga yang terjadi terhadap pasangan, anak, maupun anggota keluarga lainnya, baik dalam bentuk fisik, psikis, seksual, maupun penelantaran.</p>
                         </div>
                     </div>
-                </div>
-                <p class="mt-4 text-center fw-bold">Anda tidak sendirian. Laporkan, kami siap membantu.</p>
+                </div>               
             </div>
         </div>
 
@@ -228,7 +267,7 @@
             </div>
         </div>
 
-        <!-- BAGIAN 3: FORM LAPORAN (diperluas) -->
+        <!-- BAGIAN 3: FORM LAPORAN (diperluas + waktu kejadian) -->
         <div id="form-pengaduan" class="mt-5">
             <div class="card shadow-sm p-4">
                 <h2 class="fw-bold mb-4">Laporkan Kekerasan</h2>
@@ -328,7 +367,7 @@
                         </select>
                     </div>
 
-                    <!-- TEMPAT KEJADIAN (baru) -->
+                    <!-- TEMPAT KEJADIAN -->
                     <div class="mb-3">
                         <label for="tempat_kejadian" class="form-label fw-bold">Tempat Kejadian</label>
                         <select class="form-select" id="tempat_kejadian" name="tempat_kejadian">
@@ -346,19 +385,19 @@
                         </div>
                     </div>
 
-                    <!-- [BARU] WAKTU KEJADIAN -->
+                    <!-- WAKTU KEJADIAN -->
                     <div class="mb-3">
-                        <label for="waktu_kejadian" class="form-label fw-bold">Kapan Terjadinya?</label>
+                        <label for="waktu_kejadian" class="form-label fw-bold">Waktu Kejadian</label>
                         <select class="form-select" id="waktu_kejadian" name="waktu_kejadian">
                             <option value="">-- Pilih --</option>
-                            <option>Pagi</option>
-                            <option>Siang</option>
-                            <option>Sore</option>
-                            <option>Malam</option>
+                            <option value="Pagi">Pagi (00.00 - 10.00)</option>
+                            <option value="Siang">Siang (10.00 - 15.00)</option>
+                            <option value="Sore">Sore (15.00 - 18.00)</option>
+                            <option value="Malam">Malam (18.00 - 00.00)</option>
                         </select>
                     </div>
 
-                    <!-- SIAPA PELAKU (baru) -->
+                    <!-- SIAPA PELAKU -->
                     <div class="mb-3">
                         <label for="pelaku" class="form-label fw-bold">Siapa Pelaku</label>
                         <select class="form-select" id="pelaku" name="pelaku">
@@ -388,7 +427,7 @@
                         <textarea class="form-control" id="kronologi" name="kronologi" rows="4" placeholder="Ceritakan apa yang terjadi..."></textarea>
                     </div>
 
-                    <!-- SARAN (baru) -->
+                    <!-- SARAN -->
                     <div class="mb-3">
                         <label for="saran" class="form-label fw-bold">Saran / Masukan (opsional)</label>
                         <textarea class="form-control" id="saran" name="saran" rows="2" placeholder="Tulis saran Anda untuk KILASAN..."></textarea>
@@ -410,13 +449,13 @@
     </div>
 </div>
 
-<!-- Footer dengan warna biru #3e74b4 -->
+<!-- Footer dengan perpaduan biru & hijau -->
 <footer class="footer">
     <div class="container">
-        <div class="row">
+        <div class="row align-items-start">
             <div class="col-md-6">
                 <img src="asset/logokilasan.png" alt="logo" style="max-height: 75px; filter: brightness(0) invert(1);">
-                <p class="mt-3">KILASAN adalah layanan Kementerian PPPA untuk menangani kekerasan terhadap perempuan dan anak. Hotline 129, WhatsApp 0811-129-129.</p>
+                <p class="mt-3">KILASAN merupakan platform pengaduan dan layanan informasi yang hadir untuk membantu masyarakat dalam melaporkan serta menangani berbagai bentuk kekerasan secara aman, cepat, dan terpercaya demi menciptakan lingkungan yang lebih peduli dan terlindungi.</p>
             </div>
             <div class="col-md-3">
                 <h5>Kontak</h5>
@@ -427,8 +466,8 @@
             <div class="col-md-3">
                 <h5>Tentang</h5>
                 <ul class="list-unstyled">
-                    <li><a href="landing_page.html#cara-lapor">Cara Lapor</a></li>
-                    <li><a href="landing_page.html#kapan-lapor">Kapan Lapor</a></li>
+                    <li><a href="index.html#cara-lapor">Cara Lapor</a></li>
+                    <li><a href="index.html#kapan-lapor">Kapan Lapor</a></li>
                     <li><a href="about.html">Tentang Kami</a></li>
                 </ul>
             </div>
@@ -459,22 +498,8 @@
         return today.toISOString().split('T')[0];
     }
 
-    // Helper: baca file sebagai base64
-    function readFileAsBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve({
-                name: file.name,
-                type: file.type,
-                data: reader.result
-            });
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
-
     // Event submit form
-    document.getElementById('report-form').addEventListener('submit', async function(e) {
+    document.getElementById('report-form').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const recaptchaResponse = grecaptcha.getResponse();
@@ -504,7 +529,7 @@
         const kronologi = document.getElementById('kronologi').value.trim() || '-';
         const jenisPelapor = document.getElementById('jenis_pelapor').value;
         
-        // Data baru
+        // Data tambahan
         let tempatKejadian = document.getElementById('tempat_kejadian').value;
         if (tempatKejadian === 'Lainnya') {
             const tempatLain = document.getElementById('tempat_lainnya').value.trim();
@@ -517,22 +542,6 @@
         }
         const saran = document.getElementById('saran').value.trim() || '-';
         const waktuKejadian = document.getElementById('waktu_kejadian').value || '-';
-
-        // Proses bukti (file)
-        const fileInput = document.getElementById('bukti');
-        const files = fileInput.files;
-        let buktiArray = [];
-        if (files.length > 0) {
-            try {
-                for (let i = 0; i < files.length; i++) {
-                    const fileData = await readFileAsBase64(files[i]);
-                    buktiArray.push(fileData);
-                }
-            } catch (err) {
-                alert('Gagal membaca file bukti. Silakan coba lagi.');
-                return;
-            }
-        }
 
         const newComplaint = {
             id: generateComplaintId(),
@@ -550,8 +559,7 @@
             tempatKejadian: tempatKejadian,
             pelaku: pelaku,
             saran: saran,
-            waktuKejadian: waktuKejadian,
-            bukti: buktiArray   // <-- menyimpan array base64
+            waktuKejadian: waktuKejadian
         };
 
         const complaints = getComplaints();
@@ -564,7 +572,7 @@
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 5000);
 
-        // Reset form
+        // Reset form dan kembali ke awal
         document.getElementById('report-form').reset();
         document.getElementById('form-pengaduan').style.display = 'none';
         document.getElementById('initial-choice').style.display = 'block';
@@ -583,7 +591,7 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // ======================= DATA WILAYAH JAKARTA (SAMA SEPERTI SEBELUMNYA) =======================
+    // ======================= DATA WILAYAH JAKARTA (LENGKAP) =======================
     const dataWilayah = {
         "Jakarta Barat": {
             kecamatan: ["Kembangan", "Cengkareng", "Kalideres", "Tambora", "Grogol Petamburan", "Palmerah", "Kebon Jeruk"],
@@ -660,6 +668,7 @@
         }
     };
 
+    // DOM elements untuk wilayah
     const kotaSelect = document.getElementById('kota');
     const kecamatanSelect = document.getElementById('kecamatan');
     const kelurahanSelect = document.getElementById('kelurahan');
@@ -751,7 +760,7 @@
     rwSelect.value = "RW 01";
     updateCombinedLocation();
 
-    // Event untuk menampilkan input "Lainnya"
+    // Event untuk menampilkan input "Lainnya" pada Tempat Kejadian dan Pelaku
     const tempatKejadianSelect = document.getElementById('tempat_kejadian');
     const tempatLainnyaContainer = document.getElementById('tempat_lainnya_container');
     const pelakuSelect = document.getElementById('pelaku');
