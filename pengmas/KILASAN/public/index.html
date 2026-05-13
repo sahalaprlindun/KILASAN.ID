@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KILASAN - Laporan Kekerasan Perempuan & Anak</title>
+    <!-- Bootstrap 5 + FontAwesome + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rubik', sans-serif; background: #fff; color: #1f2a3e; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+        .section-title { margin-bottom: 2rem; }
+        .section-title .tagline { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: #dc3545; font-weight: 600; }
+        .section-title .title { font-size: 2rem; font-weight: 800; margin-top: 0.5rem; }
+        .thm-btn { display: inline-block; background-color: #dc3545; color: white; padding: 12px 30px; border-radius: 40px; font-weight: 600; text-decoration: none; transition: 0.3s; border: none; }
+        .thm-btn:hover { background-color: #b02a37; color: white; }
+        .main-header { background: #fff; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .navbar-brand img { max-height: 80px; }
+        .nav-link { font-weight: 500; color: #1f2a3e; }
+        
+        /* Hero section - SEKARANG menggunakan gradien SEPTERTI FOOTER (biru + hijau) */
+        .hero-slider { 
+            background: linear-gradient(115deg, #005B9F 0%, #28A47B 100%);
+            color: white; 
+            padding: 80px 0; 
+        }
+        
+        .hero-content h2 { font-size: 3rem; font-weight: 800; }
+        .hero-content p { font-size: 1.1rem; margin-top: 1rem; }
+        
+        /* Footer - sama persis gradien biru+hijau */
+        .footer { 
+            background: linear-gradient(115deg, #005B9F 0%, #28A47B 100%);
+            color: #f0f9ff; 
+            padding: 40px 0 20px; 
+        }
+        .footer a { 
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover { 
+            color: #C8FFE0 !important;
+            text-decoration: underline;
+        }
+        .footer .text-center, .footer p, .footer h5 {
+            color: #ffffff;
+        }
+        
+        /* CTA section di atas footer juga biru (konsisten) */
+        .cta-section { background-color: #3e74b4; }
+        
+        /* Floating buttons */
+        .floating-btn { position: fixed; left: 20px; background: white; border-radius: 50%; width: 70px; height: 70px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: 0.2s; }
+        .floating-btn:hover { transform: scale(1.05); }
+        .floating-btn-wa { bottom: 20px; }
+        .floating-btn-telp { bottom: 100px; }
+        @media (max-width: 480px) { .floating-btn { width: 55px; height: 55px; } .floating-btn-telp { bottom: 85px; } .floating-btn-wa { bottom: 15px; } }
+        .navbar-nav .btn-lapor { padding: 0.5rem 1.5rem; }
+        @media (max-width: 991.98px) { .navbar-nav .btn-lapor { margin-top: 0.5rem; } }
+        
+        /* Kartu statis untuk "Kapan Harus Lapor" */
+        .card-kapan {
+            transition: 0.3s;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+            padding: 1.5rem;
+            text-align: center;
+            background: white;
+        }
+        .card-kapan:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(40, 164, 123, 0.15);
+            border-bottom: 3px solid #28A47B;
+        }
+        .card-kapan i {
+            font-size: 2.5rem;
+            color: #005B9F;
+            margin-bottom: 1rem;
+            transition: 0.2s;
+        }
+        .card-kapan:hover i {
+            color: #28A47B;
+        }
+        .card-kapan h5 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+        
+        /* ========== CAROUSEL JENIS KEKERASAN - PERSEGI PANJANG (21:10) ========== */
+        .carousel-jenis-container {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        .carousel-jenis {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .carousel-jenis .carousel-inner {
+            border-radius: 0;
+            margin-bottom: 20px;
+        }
+        .carousel-jenis .carousel-item .card {
+            margin: 0 auto;
+            width: 95%;
+            max-width: 800px;
+            border: none;
+            border-radius: 28px;
+            aspect-ratio: 21 / 10;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1.8rem;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            z-index: 1;
+        }
+        .carousel-jenis .carousel-item .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+            border-radius: 28px;
+            z-index: -1;
+        }
+        .carousel-jenis .card-icon { font-size: 2.5rem; margin-bottom: 0.3rem; text-align: center; }
+        .carousel-jenis .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; text-align: center; }
+        .carousel-jenis .card-desc { font-size: 1rem; line-height: 1.4; text-align: center; margin-bottom: 0.5rem; }
+        .carousel-jenis .example-list { font-size: 0.9rem; text-align: center; margin: 0.3rem 0 0.5rem 0; }
+        .carousel-jenis .tombol-detail { 
+            background: rgba(0, 91, 159, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(40, 164, 123, 0.6);
+            border-radius: 40px;
+            padding: 6px 20px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.25s;
+        }
+        .carousel-jenis .tombol-detail:hover { 
+            background: #28A47B;
+            border-color: white;
+            color: white !important;
+            transform: scale(1.02);
+        }
+        .carousel-jenis .mt-auto { margin-top: 0.2rem !important; }
+        
+        /* Navigasi arrow */
+        .carousel-jenis .carousel-control-prev {
+            left: -0.5rem;
+        }
+        .carousel-jenis .carousel-control-next {
+            right: -0.5rem;
+        }
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            background-color: #28A47B;
+            border-radius: 50%;
+            padding: 12px;
+            background-size: 45% 45%;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .carousel-control-prev-icon:hover, .carousel-control-next-icon:hover {
+            background-color: #1F8A67;
+            transform: scale(1.05);
+        }
+        
+        .carousel-indicators {
+            bottom: -50px;
+        }
+        .carousel-indicators button {
+            background-color: #005B9F !important;
+            width: 12px !important;
+            height: 12px !important;
+            border-radius: 50%;
+            margin: 0 6px;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+        .carousel-indicators button.active {
+            background-color: #28A47B !important;
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        @media (max-width: 768px) {
+            .carousel-jenis .carousel-item .card {
+                width: 92%;
+                aspect-ratio: auto;
+                min-height: 340px;
+                padding: 0.8rem 1.2rem;
+            }
+            .carousel-jenis .card-icon { font-size: 2rem; }
+            .carousel-jenis .card-title { font-size: 1.4rem; }
+            .carousel-jenis .card-desc { font-size: 0.85rem; }
+            .carousel-jenis .example-list { font-size: 0.75rem; }
+            .carousel-jenis .tombol-detail { font-size: 0.75rem; padding: 4px 14px; }
+            .carousel-indicators {
+                bottom: -40px;
+            }
+        }
+
+        /* ===== PERPADUAN BIRU + HIJAU (LOGO UMB) UNTUK BUTTON & HOVER LAINNYA ===== */
+        /* Tombol utama .thm-btn (seperti di cara lapor) */
+        .thm-btn {
+            background-color: #28A47B;
+            box-shadow: 0 4px 12px rgba(0,91,159,0.2);
+        }
+        .thm-btn:hover {
+            background-color: #1F8A67;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,91,159,0.3);
+        }
+
+        /* Tombol LAPOR di navbar (override btn-danger) */
+        .btn-danger, .btn-danger:focus {
+            background-color: #28A47B !important;
+            border-color: #28A47B !important;
+            box-shadow: none;
+        }
+        .btn-danger:hover {
+            background-color: #1F8A67 !important;
+            border-color: #1F8A67 !important;
+            transform: translateY(-1px);
+        }
+
+        /* Floating icon telepon berubah warna jadi hijau kebiruan */
+        .floating-btn-telp i {
+            color: #28A47B !important;
+        }
+        .floating-btn:hover {
+            background: #005B9F;
+        }
+        .floating-btn:hover i {
+            color: white !important;
+        }
+        .floating-btn-wa:hover i {
+            color: white !important;
+        }
+
+        /* Hover link umum diluar navbar */
+        a:not(.nav-link):hover {
+            color: #28A47B !important;
+            transition: 0.2s;
+        }
+
+        /* Hover pada link di footer sudah diatur di atas */
+        /* menjaga navbar link tetap tidak berubah */
+        .navbar-nav .nav-link:hover {
+            color: #1f2a3e !important;
+            text-decoration: none;
+        }
+
+        /* Tombol detail di carousel sudah diatur */
+        /* Warna icon di "Mengapa Harus Lapor" tetap merah seperti aslinya (tidak diubah karena instruksi hanya hover, footer, button) */
+        /* namun secara estetika tidak masalah, biarkan sesuai asli */
+        hr {
+            background-color: rgba(255,255,255,0.2);
+        }
+        .footer hr {
+            border-color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header (navbar biarkan seperti asli) -->
+<header class="main-header">
+    <nav class="navbar navbar-expand-lg bg-white py-3">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="asset/newlogo.png" alt="Logo KILASAN"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#cara-lapor">Cara Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kapan-lapor">Kapan Harus Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#jenis-kekerasan">Jenis Kekerasan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#mengapa">Mengapa Harus Lapor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item ms-auto me-3"><a href="form_page.html" class="btn btn-danger rounded- btn-lapor">LAPOR</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero section - Sekarang menggunakan gradien perpaduan biru dan hijau seperti footer -->
+<section class="hero-slider">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 hero-content">
+                <h2><span style="color: #F8F9FA;">KILASAN</span></h2>
+                <p>Platform pengaduan resmi untuk melaporkan berbagai bentuk kekerasan, pelecehan, penelantaran, dan tindakan yang merugikan masyarakat sekitar.</p>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Cara Lapor -->
+<section class="container py-5" id="cara-lapor">
+    <div class="row align-items-center">
+        <div class="col-md-6 mb-4"><img src="asset/ilustrasikekerasan.png" class="img-fluid rounded shadow" alt="Ilustrasi"></div>
+        <div class="col-md-6">
+            <div class="section-title"><span class="tagline">Layanan</span><h2 class="title">KILASAN</h2></div>
+            <p>Butuh bantuan? Laporkan melalui Telepon, WhatsApp, atau formulir online. Kami akan menindak lanjuti setiap laporan Anda.</p>
+            <div class="text-danger fw-bold">Cara Melapor:</div>
+            <div class="d-flex gap-3 mt-4">
+                <div><i class="fas fa-phone-alt fa-2x text-danger"></i><br><strong>Layanan Cepat</strong><br>Hotline 129</div>
+                <div><i class="fab fa-whatsapp fa-2x" style="color: #25D366;"></i><br><strong>WhatsApp</strong><br>0811-129-129</div>
+                <div><i class="fas fa-file-alt fa-2x text-danger"></i><br><strong>Form Online</strong><br>24 jam</div>
+            </div>
+            <a href="form_page.html" class="thm-btn mt-4">Lapor Sekarang</a>
+        </div>
+    </div>
+</section>
+
+<!-- Kapan Harus Lapor -->
+<section class="container py-5" id="kapan-lapor">
+    <div class="section-title text-center">
+        <h2 class="title">Kapan Anda Harus Menghubungi KILASAN?</h2>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card-kapan">
+                <i class="fas fa-home"></i>
+                <h5>Anda mengalami KDRT atau kekerasan lainnya</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-kapan">
+                <i class="fas fa-eye"></i>
+                <h5>Anda mengetahui seseorang di sekitar yang menjadi korban kekerasan</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-kapan">
+                <i class="fas fa-gavel"></i>
+                <h5>Anda butuh panduan hukum dan perlindungan</h5>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Carousel Jenis Kekerasan -->
+<section class="py-5" id="jenis-kekerasan">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2 class="title"><i class="fas fa-exclamation-triangle text-danger me-2"></i> Jenis-Jenis Kekerasan</h2>
+            <p>Kenali bentuk kekerasan, laporkan jika Anda atau orang terdekat mengalaminya</p>
+        </div>
+    </div>
+    <div class="carousel-jenis-container">
+        <div id="carouselJenis" class="carousel carousel-jenis slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-inner">
+                <!-- Slide 1: Kekerasan Fisik -->
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-center">
+                        <div class="card" style="background-image: url('asset/jeniskekerasan/kekerasanfisik.png');">
+                            <div class="card-icon"><i class="fas fa-fist-raised"></i></div>
+                            <div class="card-title">Kekerasan Fisik</div>
+                            <div class="card-desc">Tindakan yang menyebabkan luka, cedera, atau rasa sakit pada tubuh.</div>
+                            <div class="text-center mt-auto pt-1">
+                                <a href="#" class="tombol-detail" data-bs-toggle="modal" data-bs-target="#modalFisik">Pelajari lebih <i class="fas fa-arrow-right ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2: Kekerasan Psikis -->
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center">
+                        <div class="card" style="background-image: url('asset/jeniskekerasan/kekerasanpsikis.png');">
+                            <div class="card-icon"><i class="fas fa-brain"></i></div>
+                            <div class="card-title">Kekerasan Psikis</div>
+                            <div class="card-desc">Pelecehan emosional, ancaman, isolasi yang merusak mental.</div>
+                            <div class="text-center mt-auto pt-1">
+                                <a href="#" class="tombol-detail" data-bs-toggle="modal" data-bs-target="#modalPsikis">Pelajari lebih <i class="fas fa-arrow-right ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 3: Kekerasan Seksual -->
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center">
+                        <div class="card" style="background-image: url('asset/jeniskekerasan/kekerasanseksual.png');">
+                            <div class="card-icon"><i class="fas fa-hand-peace"></i></div>
+                            <div class="card-title">Kekerasan Seksual</div>
+                            <div class="card-desc">Pemaksaan hubungan seksual atau perilaku seksual tidak disetujui.</div>
+                            <div class="text-center mt-auto pt-1">
+                                <a href="#" class="tombol-detail" data-bs-toggle="modal" data-bs-target="#modalSeksual">Pelajari lebih <i class="fas fa-arrow-right ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 4: Penelantaran -->
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center">
+                        <div class="card" style="background-image: url('asset/jeniskekerasan/penelantaran.png');">
+                            <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                            <div class="card-title">Penelantaran</div>
+                            <div class="card-desc">Tidak memenuhi kebutuhan dasar makan, kesehatan, pendidikan.</div>
+                            <div class="text-center mt-auto pt-1">
+                                <a href="#" class="tombol-detail" data-bs-toggle="modal" data-bs-target="#modalPenelantaran">Pelajari lebih <i class="fas fa-arrow-right ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselJenis" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselJenis" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselJenis" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#carouselJenis" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#carouselJenis" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#carouselJenis" data-bs-slide-to="3"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal detail (tetap sama) -->
+<div class="modal fade" id="modalFisik" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Fisik</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan fisik adalah tindakan yang dilakukan dengan menggunakan kekuatan fisik yang dapat menyebabkan rasa sakit, cedera, atau kerusakan pada tubuh seseorang. Bentuk kekerasan ini meliputi memukul, menendang, menampar, mencekik, atau tindakan lain yang melukai tubuh korban. Kekerasan fisik dapat terjadi dalam berbagai lingkungan, seperti keluarga, sekolah, maupun tempat kerja, dan sering kali meninggalkan dampak jangka pendek maupun jangka panjang, baik secara fisik maupun psikologis. Dalam konteks hukum, kekerasan fisik termasuk dalam tindak pidana penganiayaan yang diatur dalam Kitab Undang-Undang Hukum Pidana (KUHP), dengan ancaman hukuman yang bervariasi tergantung pada tingkat luka yang ditimbulkan. Jika terjadi dalam lingkup rumah tangga, maka juga dapat dijerat dengan Undang-Undang Penghapusan Kekerasan dalam Rumah Tangga (UU PKDRT).</div></div></div>
+</div>
+<div class="modal fade" id="modalPsikis" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Psikis</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan psikis merupakan tindakan yang menyerang kondisi mental atau emosional seseorang sehingga menimbulkan rasa takut, rendah diri, stres, atau gangguan psikologis lainnya. Bentuk kekerasan ini sering kali tidak terlihat secara fisik, tetapi dampaknya sangat besar, seperti penghinaan, ancaman, intimidasi, manipulasi, hingga pengucilan. Kekerasan psikis dapat menyebabkan korban kehilangan kepercayaan diri, mengalami depresi, bahkan gangguan kesehatan mental yang serius. Dalam hukum Indonesia, kekerasan psikis diakui sebagai bentuk kekerasan yang dapat diproses secara hukum, terutama dalam Undang-Undang Penghapusan Kekerasan dalam Rumah Tangga (UU PKDRT) serta diperkuat dalam Undang-Undang Tindak Pidana Kekerasan Seksual (UU TPKS) yang juga mengakui dampak psikis sebagai bagian dari penderitaan korban yang harus dilindungi.</div></div></div>
+</div>
+<div class="modal fade" id="modalSeksual" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Kekerasan Seksual</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Kekerasan seksual merupakan segala bentuk perbuatan yang merendahkan, menghina, menyerang, atau tindakan lain terhadap tubuh, hasrat seksual, dan fungsi reproduksi seseorang yang dilakukan tanpa persetujuan. Tindakan ini dapat terjadi dalam berbagai bentuk, baik secara fisik maupun nonfisik, seperti pelecehan seksual, pemerkosaan, eksploitasi seksual, hingga kekerasan seksual berbasis digital. Dalam Undang-Undang Tindak Pidana Kekerasan Seksual (UU TPKS) dijelaskan bahwa kekerasan seksual tidak hanya mencakup tindakan yang bersifat langsung, tetapi juga mencakup perbuatan yang dilakukan melalui paksaan, ancaman, manipulasi, maupun penyalahgunaan kekuasaan yang mengakibatkan penderitaan fisik, psikis, seksual, atau kerugian ekonomi bagi korban. Dengan demikian, inti dari kekerasan seksual terletak pada tidak adanya persetujuan (consent) dari korban.</div></div></div>
+</div>
+<div class="modal fade" id="modalPenelantaran" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5>Penelantaran</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">Penelantaran merupakan bentuk kekerasan yang terjadi ketika seseorang yang memiliki tanggung jawab terhadap individu lain, seperti orang tua, wali, atau pihak yang berwenang, dengan sengaja tidak memenuhi kebutuhan dasar yang seharusnya diberikan. Kebutuhan tersebut meliputi kebutuhan fisik seperti makanan, tempat tinggal, dan kesehatan, serta kebutuhan emosional dan pendidikan. Penelantaran dapat menyebabkan dampak serius, terutama pada anak, seperti gangguan pertumbuhan, keterlambatan perkembangan, hingga trauma psikologis. Dalam hukum Indonesia, penelantaran diatur dalam Undang-Undang Perlindungan Anak yang menegaskan bahwa setiap anak berhak mendapatkan perlindungan dan pemenuhan kebutuhan hidup yang layak, serta dalam Kitab Undang-Undang Hukum Pidana (KUHP) yang mengatur sanksi bagi pihak yang dengan sengaja menelantarkan orang yang berada dalam tanggung jawabnya.</div></div></div>
+</div>
+
+<!-- Mengapa Harus Lapor -->
+<section class="bg-white py-5" id="mengapa">
+    <div class="container">
+        <h3 class="text-center text-dark fw-bold mb-5">Mengapa Harus Menghubungi KILASAN?</h3>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 ps-lg-4"><div class="d-flex gap-3"><i class="fas fa-bolt fa-2x text-danger"></i><div><h5 class="text-dark">Tindakan Cepat</h5><p class="text-muted">Memberikan respons cepat terhadap setiap laporan yang masuk dengan penanganan yang tepat, terarah, dan profesional demi membantu korban serta menciptakan lingkungan yang lebih aman.</p></div></div></div>
+            <div class="col-md-6 ps-lg-4"><div class="d-flex gap-3"><i class="fas fa-heart fa-2x text-danger"></i><div><h5 class="text-dark">Pendampingan Korban</h5><p class="text-muted">Memberikan pendampingan menyeluruh bagi korban melalui dukungan psikologis, bantuan visum, serta pendampingan dalam proses pelaporan dan penanganan bersama pihak kepolisian.</p></div></div></div>
+            <div class="col-md-6 ps-lg-4"><div class="d-flex gap-3"><i class="fas fa-lock fa-2x text-danger"></i><div><h5 class="text-dark">Keamanan Terjamin</h5><p class="text-muted">Menjamin keamanan dan kerahasiaan pelapor dengan memberikan perlindungan dari ancaman, intimidasi, maupun tindakan lanjutan yang dapat membahayakan korban atau masyarakat sekitar.</p></div></div></div>
+            <div class="col-md-6 ps-lg-4"><div class="d-flex gap-3"><i class="fas fa-balance-scale fa-2x text-danger"></i><div><h5 class="text-dark">Dukungan Hukum</h5><p class="text-muted">Memberikan dukungan dan pendampingan dalam proses hukum sesuai peraturan perundang-undangan yang berlaku guna memastikan hak dan perlindungan korban terpenuhi secara adil.</p></div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Partisipasi -->
+<section class="container py-5 text-center" id="partisipasi">
+    <div class="section-title"><span class="tagline">Ayo Kita Berpartisipasi!</span><h2 class="title">Jadilah Bagian dari Gerakan Perlindungan Masyarakat Sekitar!</h2></div>
+    <p class="mx-auto" style="max-width: 700px;">Dengan menyebarkan informasi dan menggunakan layanan pengaduan ini, Anda turut membantu menciptakan lingkungan yang lebih aman serta melindungi perempuan, anak-anak, dan masyarakat dari berbagai bentuk kekerasan dan tindakan berbahaya.</p>
+</section>
+
+<!-- Footer dengan gradien perpaduan biru & hijau (sama seperti hero) -->
+<footer class="footer">
+    <div class="container">
+        <div class="row align-items-start">
+            <div class="col-md-6">
+                <img src="asset/logokilasan.png" alt="logo" style="max-height: 75px; filter: brightness(0) invert(1);">
+                <p class="mt-3">KILASAN merupakan platform pengaduan dan layanan informasi yang hadir untuk membantu masyarakat dalam melaporkan serta menangani berbagai bentuk kekerasan secara aman, cepat, dan terpercaya demi menciptakan lingkungan yang lebih peduli dan terlindungi.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Kontak</h5>
+                <p><i class="fas fa-phone-alt me-2"></i> 129<br>
+                <i class="fab fa-whatsapp me-2"></i> 0811-129-129<br>
+                <i class="fas fa-globe me-2"></i> <a href="form_page.html">Lapor Online</a></p>
+            </div>
+            <div class="col-md-3">
+                <h5>Tentang</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#cara-lapor">Cara Lapor</a></li>
+                    <li><a href="#kapan-lapor">Kapan Lapor</a></li>
+                    <li><a href="about.html">Tentang Kami</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="mt-4">
+        <div class="text-center">© 2026 - KILASAN. All rights reserved.</div>
+    </div>
+</footer>
+
+<!-- Floating buttons -->
+<div class="floating-btn floating-btn-telp" onclick="window.location.href='tel:129'" title="Panggil Hotline Darurat 129"><i class="fas fa-phone-alt fa-2x"></i></div>
+<div class="floating-btn floating-btn-wa" onclick="window.open('https://wa.me/62811129129?text=Halo,%20saya%20membutuhkan%20bantuan%20DARURAT%20terkait%20kekerasan.', '_blank')"><i class="fab fa-whatsapp fa-3x" style="color: #25D366;"></i></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
