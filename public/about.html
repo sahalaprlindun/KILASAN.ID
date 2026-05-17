@@ -72,8 +72,23 @@
             background: #fff;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
+        /* Style untuk logo ganda di navbar (sama seperti index) */
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Jarak antar logo */
+        }
         .navbar-brand img {
-            max-height: 80px;
+            max-height: 60px;
+            width: auto;
+        }
+        @media (max-width: 576px) {
+            .navbar-brand img {
+                max-height: 40px;
+            }
+            .navbar-brand {
+                gap: 4px;
+            }
         }
         .nav-link {
             font-weight: 500;
@@ -203,12 +218,13 @@
 </head>
 <body>
 
-<!-- Header (navbar mirip index, dengan warna tombol lapor hijau) -->
+<!-- Header (navbar dengan logo ganda: logolurah.png + newlogo.png) -->
 <header class="main-header">
     <nav class="navbar navbar-expand-lg bg-white py-3">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="asset/newlogo.png" alt="Logo" style="max-height: 80px;">
+                <img src="asset/logolurah.png" alt="Logo Lurah">
+                <img src="asset/newlogo.png" alt="Logo KILASAN">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -291,7 +307,7 @@
                         <img src="asset/tim/sahala-limbong.jpeg" alt="Sahala Parlindungan Limbong">
                     </div>
                     <div class="card-body p-0 pt-2 d-flex flex-column">
-                        <h5 class="fw-bold mt-2">Sahala Parlindungan</h5>
+                        <h5 class="fw-bold mt-2">Sahala Parlindungan Limbong</h5>
                         <span class="text-danger fw-bold">Widget Mobile</span>
                         <p class="small mt-2">Berperan dalam pengembangan dan integrasi fitur mobile pada platform KILASAN agar layanan dapat diakses dengan nyaman, responsif, dan optimal di berbagai perangkat pengguna.</p>
                     </div>
@@ -354,7 +370,7 @@
             </div>
         </div>
         <hr class="mt-4">
-        <div class="text-center">© 2026 - KILASAN. All rights reserved.</div>
+        <div class="text-center">©2026 KILASAN - Universitas Mercu Buana - Teknik Informatika.</div>
     </div>
 </footer>
 

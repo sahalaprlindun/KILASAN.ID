@@ -18,7 +18,7 @@
         .thm-btn { display: inline-block; background-color: #dc3545; color: white; padding: 12px 30px; border-radius: 40px; font-weight: 600; text-decoration: none; transition: 0.3s; border: none; }
         .thm-btn:hover { background-color: #b02a37; color: white; }
         .main-header { background: #fff; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .navbar-brand img { max-height: 80px; }
+        .navbar-brand img { max-height: 50px; } /* Ukuran logo lebih kecil (dari 80px) */
         .nav-link { font-weight: 500; color: #1f2a3e; }
         
         /* Hero section - SEKARANG menggunakan gradien SEPTERTI FOOTER (biru + hijau) */
@@ -227,7 +227,7 @@
             box-shadow: 0 8px 20px rgba(0,91,159,0.3);
         }
 
-        /* Tombol LAPOR di navbar (override btn-danger) */
+        /* Tombol LAPOR di navbar - warna hijau & ukuran diperkecil seperti about.html */
         .btn-danger, .btn-danger:focus {
             background-color: #28A47B !important;
             border-color: #28A47B !important;
@@ -259,31 +259,48 @@
             transition: 0.2s;
         }
 
-        /* Hover pada link di footer sudah diatur di atas */
         /* menjaga navbar link tetap tidak berubah */
         .navbar-nav .nav-link:hover {
             color: #1f2a3e !important;
             text-decoration: none;
         }
 
-        /* Tombol detail di carousel sudah diatur */
-        /* Warna icon di "Mengapa Harus Lapor" tetap merah seperti aslinya (tidak diubah karena instruksi hanya hover, footer, button) */
-        /* namun secara estetika tidak masalah, biarkan sesuai asli */
         hr {
             background-color: rgba(255,255,255,0.2);
         }
         .footer hr {
             border-color: rgba(255,255,255,0.3);
         }
+        /* Style untuk logo ganda di navbar agar responsif */
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Jarak antar logo lebih rapat (dari 12px) */
+        }
+        .navbar-brand img {
+            max-height: 60px;
+            width: auto;
+        }
+        @media (max-width: 576px) {
+            .navbar-brand img {
+                max-height: 40px; /* Ukuran lebih kecil di HP */
+            }
+            .navbar-brand {
+                gap: 4px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<!-- Header (navbar biarkan seperti asli) -->
+<!-- Header (navbar) dengan tombol LAPOR ukuran ramping seperti about.html -->
 <header class="main-header">
     <nav class="navbar navbar-expand-lg bg-white py-3">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="asset/newlogo.png" alt="Logo KILASAN"></a>
+            <a class="navbar-brand" href="#">
+                <img src="asset/logolurah.png" alt="Logo Lurah">
+                <img src="asset/newlogo.png" alt="Logo KILASAN">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -294,14 +311,17 @@
                     <li class="nav-item"><a class="nav-link" href="#jenis-kekerasan">Jenis Kekerasan</a></li>
                     <li class="nav-item"><a class="nav-link" href="#mengapa">Mengapa Harus Lapor</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
-                    <li class="nav-item ms-auto me-3"><a href="form_page.html" class="btn btn-danger rounded- btn-lapor">LAPOR</a></li>
+                    <!-- Perubahan utama: ukuran tombol LAPOR disamakan dengan about.html (px-3 py-1) -->
+                    <li class="nav-item ms-auto me-3">
+                        <a href="form_page.html" class="btn btn-danger px-3 py-1">LAPOR</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
 
-<!-- Hero section - Sekarang menggunakan gradien perpaduan biru dan hijau seperti footer -->
+<!-- Hero section -->
 <section class="hero-slider">
     <div class="container">
         <div class="row align-items-center">
@@ -320,6 +340,7 @@
         <div class="col-md-6 mb-4"><img src="asset/ilustrasikekerasan.png" class="img-fluid rounded shadow" alt="Ilustrasi"></div>
         <div class="col-md-6">
             <div class="section-title"><span class="tagline">Layanan</span><h2 class="title">KILASAN</h2></div>
+            
             <p>Butuh bantuan? Laporkan melalui Telepon, WhatsApp, atau formulir online. Kami akan menindak lanjuti setiap laporan Anda.</p>
             <div class="text-danger fw-bold">Cara Melapor:</div>
             <div class="d-flex gap-3 mt-4">
@@ -474,7 +495,7 @@
     <p class="mx-auto" style="max-width: 700px;">Dengan menyebarkan informasi dan menggunakan layanan pengaduan ini, Anda turut membantu menciptakan lingkungan yang lebih aman serta melindungi perempuan, anak-anak, dan masyarakat dari berbagai bentuk kekerasan dan tindakan berbahaya.</p>
 </section>
 
-<!-- Footer dengan gradien perpaduan biru & hijau (sama seperti hero) -->
+<!-- Footer dengan gradien biru-hijau -->
 <footer class="footer">
     <div class="container">
         <div class="row align-items-start">
@@ -498,7 +519,7 @@
             </div>
         </div>
         <hr class="mt-4">
-        <div class="text-center">© 2026 - KILASAN. All rights reserved.</div>
+        <div class="text-center">©2026 KILASAN - Universitas Mercu Buana - Teknik Informatika.</div>
     </div>
 </footer>
 

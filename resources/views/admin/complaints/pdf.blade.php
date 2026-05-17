@@ -20,6 +20,7 @@
             border-bottom: 1px solid #ccc;
             position: relative;
             min-height: 80px;
+            padding-top: 60px; /* Space for both logos (top aligned) */
         }
 
         .row {
@@ -59,12 +60,20 @@
     @php
         $logo = public_path('asset/newlogo.png');
         $logoData = base64_encode(file_get_contents($logo));
+
+        $logoLurah = public_path('asset/lurah.png');
+        $logoLurahData = base64_encode(file_get_contents($logoLurah));
     @endphp
 
     <div class="header">
 
+        {{-- Left logo (new) --}}
+        <img src="data:image/png;base64,{{ $logoLurahData }}"
+             style="position:absolute; top:0; left:0; width:150px;">
+
+        {{-- Right logo (existing) --}}
         <img src="data:image/png;base64,{{ $logoData }}"
-             style="position:absolute; top:0; right:0; width:150px;">
+             style="position:absolute; top:0; right:0; width:50px;">
 
         <h2>Data Pengaduan Masyarakat</h2>
         <p>Nomor Pengaduan: {{ $complaint->ticket_number }}</p>
