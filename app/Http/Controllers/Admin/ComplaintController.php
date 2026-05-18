@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
+use App\Models\ComplaintAttachment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ComplaintController extends Controller
 {
@@ -53,6 +55,18 @@ class ComplaintController extends Controller
         ]);
 
         return back()->with('success', 'Status laporan berhasil diperbarui.');
+    }
+
+    public function attachment(ComplaintAttachment $attachment): StreamedResponse
+    {
+        abort_unless(Storage::disk('public')->exists($attachment->path), 404);
+
+        return Storage::disk('public')->response(
+            $attachment->path,
+            $attachment->original_name,
+            ['Content-Type' => $attachment->mime_type ?: 'application/octet-stream'],
+            'inline'
+        );
     }
 
     public function destroy(Complaint $complaint): RedirectResponse
