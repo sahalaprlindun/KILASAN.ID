@@ -35,7 +35,7 @@
 
     <h5 class="mt-4">Bukti Pendukung</h5>
     @forelse ($complaint->attachments as $attachment)
-    <a class="btn btn-sm btn-outline-primary me-2 mb-2" href="{{ asset('storage/' . $attachment->path) }}" target="_blank">{{ $attachment->original_name }}</a>
+    <a class="btn btn-sm btn-outline-primary me-2 mb-2" href="{{ route('admin.complaints.attachments.show', $attachment, false) }}" target="_blank">{{ $attachment->original_name }}</a>
     @empty
         <p class="text-muted">Tidak ada lampiran.</p>
     @endforelse
