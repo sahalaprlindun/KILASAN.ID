@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'kilasan/backend',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '7a2c55ea62ee5beb2b9a965e5dc20181187adc65',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -407,9 +407,9 @@
             ),
         ),
         'kilasan/backend' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '7a2c55ea62ee5beb2b9a965e5dc20181187adc65',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

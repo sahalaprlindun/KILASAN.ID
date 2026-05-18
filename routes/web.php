@@ -34,6 +34,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/dashboard', DashboardController::class)->name('dashboard.alias');
     Route::get('/pengaduan', [ComplaintController::class, 'index'])->name('complaints.index');
+    Route::get('/pengaduan/lampiran/{attachment}', [ComplaintController::class, 'attachment'])->name('complaints.attachments.show');
     Route::get('/pengaduan/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
     Route::get('/pengaduan/{complaint}/pdf', [ComplaintController::class, 'exportPDF'])->name('complaints.pdf'); // ← perbaiki ini
     Route::patch('/pengaduan/{complaint}/status', [ComplaintController::class, 'updateStatus'])->name('complaints.status');
